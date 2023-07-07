@@ -2,10 +2,10 @@ const express = require('express')
 const authentication = require("../../middlewares/authentication")
 const isValidId = require("../../middlewares/isValidId");
 const {
-  validateAddContact,
-  validateContactUpdate,
-  validateContactFavoriteUpdate
- } = require("../../middlewares/contactsValidation");
+  validateAddRecipe,
+  validateRecipeUpdate,
+  validateRecipeFavoriteUpdate
+ } = require("../../middlewares/recipeValidation");
 
 const {
   controllerListRecipe,
@@ -22,14 +22,14 @@ router.use(authentication);
 
 router.get('/', controllerListRecipe);
 
-router.get('/:contactId', isValidId, controllerGetRecipeById);
+router.get('/:recipeId', isValidId, controllerGetRecipeById);
 
-router.post('/', validateAddContact, controllerAddRecipe );
+router.post('/', validateAddRecipe, controllerAddRecipe );
 
-router.delete('/:contactId', isValidId, controllerRemoveRecipe)
+router.delete('/:recipeId', isValidId, controllerRemoveRecipe)
 
-router.put('/:contactId', isValidId, validateContactUpdate, controllerUpdateRecipe);
+router.put('/:recipeId', isValidId, validateRecipeUpdate, controllerUpdateRecipe);
 
-router.patch('/:contactId/favorite', isValidId, validateContactFavoriteUpdate, controllerUpdateStatusRecipe)
+router.patch('/:recipeId/favorite', isValidId, validateRecipeFavoriteUpdate, controllerUpdateStatusRecipe)
 
 module.exports = router
