@@ -18,10 +18,10 @@ const {joiAuthSchemas} = require("../../models/user");
 const router = express.Router();
 
 // register
-router.post("/register", upload.single('avatar'), validate(joiAuthSchemas.userSchemaRegisterJoi),  controllerRegister);
+router.post("/register", upload.single('avatar'), validate(joiAuthSchemas.userSchemaRegisterJoi), controllerRegister);
 
 // email verify
-router.get("/verify/:verificationToken", controllerVerifyEmail);
+router.get("/verify/:verificationToken",  controllerVerifyEmail);
 // resend email verification
 router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
 // login

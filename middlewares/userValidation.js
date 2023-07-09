@@ -1,8 +1,7 @@
 const HttpError = require("../helpers/HttpError");
-const controlWrapper = require("../decorators/controllWrapper");
 
 const validate = schema => {
-    const func = (req, res) => {
+    const func = (req, res, next) => {
         if (Object.keys(req.body).length === 0){
             throw HttpError(400, "missing fields");
         }
@@ -11,11 +10,11 @@ const validate = schema => {
         if (validationResult.error){
             throw HttpError(400,validationResult.error.message);
         }
-        console.log(schema);
+        next();
     }
     return func
 }
 
 module.exports = {
-    validate: controlWrapper(validate),
+    validate,
 }
