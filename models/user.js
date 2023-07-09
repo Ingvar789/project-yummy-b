@@ -68,6 +68,7 @@ const userSchemaMongoose = new Schema({
 userSchemaMongoose.post("save", handleMongooseError);
 
 const User = model("user", userSchemaMongoose);
+
 module.exports = {
     joiAuthSchemas,
     User,
