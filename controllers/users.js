@@ -14,7 +14,6 @@ const avatarsDir = path.resolve('public', 'avatars');
 const {SECRET_KEY} = process.env;
 
 const controllerRegister = async (req, res) => {
-    console.log(req.body);
         const {email, password} = req.body;
         let avatarURL;
         // if avatar was sent
@@ -158,7 +157,7 @@ const controllerUpdateAvatar = async (req, res) => {
 
     await User.findByIdAndUpdate(_id, {avatarURL: fileData.url})
     res.json({
-        avatarURL:avatarURL
+        avatarURL: fileData.url
     });
 }
 

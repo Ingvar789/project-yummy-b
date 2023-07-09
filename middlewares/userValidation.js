@@ -1,25 +1,20 @@
 const HttpError = require("../helpers/HttpError");
-const {joiAuthSchemas} = require("../models/user");
 
-const validateRegister = async (req, res, next) => {
+const validate = schema => {
+    const func = (req, res, next) => {
+        if (Object.keys(req.body).length === 0){
+            throw HttpError(400, "missing fields");
+        }
 
-}
-
-const validateLogin = async (req, res, next) => {
-
-}
-
-const validateSubscription = async (req, res, next) =>{
-
-}
-
-const validateEmailVerification = async (req, res, next) =>{
-
+        const validationResult = schema.validate(req.body, { abortEarly: false });
+        if (validationResult.error){
+            throw HttpError(400,validationResult.error.message);
+        }
+        next();
+    }
+    return func
 }
 
 module.exports = {
-    validateRegister,
-    validateLogin,
-    validateSubscription,
-    validateEmailVerification
+    validate,
 }
