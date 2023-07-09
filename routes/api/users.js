@@ -22,7 +22,6 @@ router.post("/register", upload.single('avatar'), validate(joiAuthSchemas.userSc
 
 // email verify
 router.get("/verify/:verificationToken", controllerVerifyEmail);
-router.get("/categories/:categoryName", CategoriesPage);
 // resend email verification
 router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
 // login

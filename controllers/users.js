@@ -158,7 +158,7 @@ const controllerUpdateAvatar = async (req, res) => {
 
     await User.findByIdAndUpdate(_id, {avatarURL: fileData.url})
     res.json({
-        avatarURL:avatarURL
+        avatarURL: fileData.url
     });
 }
 
