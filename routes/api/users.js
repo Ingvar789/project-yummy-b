@@ -9,26 +9,28 @@ const {
     controllerVerifyEmail,
     controllerResendVerifyEmail
         } = require("../../controllers/users");
-const {validateRegister, validateLogin, validateSubscription, validateEmailVerification} = require("../../middlewares/userValidation");
+
 const authentication = require("../../middlewares/authentication");
 const upload = require("../../middlewares/upload");
+const {validate} = require("../../middlewares/userValidation");
+const {joiAuthSchemas} = require("../../models/user");
 
 const router = express.Router();
 
 // register
-router.post("/register", upload.single('avatar'), validateRegister, controllerRegister);
+router.post("/register", upload.single('avatar'), validate(joiAuthSchemas.userSchemaRegisterJoi),  controllerRegister);
 // email verify
 router.get("/verify/:verificationToken", controllerVerifyEmail);
 // resend email verification
-router.post("/verify", validateEmailVerification, controllerResendVerifyEmail);
+router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
 // login
-router.post("/login", validateLogin, controllerLogin);
+router.post("/login", validate(joiAuthSchemas.userSchemaLoginJoi), controllerLogin);
 // logout
 router.post("/logout", authentication, controllerLogout);
 // current info
 router.get("/current", authentication, controllerGetCurrent);
 // subscription
-router.patch("/", authentication, validateSubscription, controllerUpdateSubscription);
+router.patch("/", authentication, validate(joiAuthSchemas.userSchemaSubscriptionJoi), controllerUpdateSubscription);
 // avatar
 router.patch("/avatars", authentication, upload.single('avatar'), controllerUpdateAvatar);
 
