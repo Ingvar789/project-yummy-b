@@ -1,5 +1,5 @@
 const {User} = require("../models/user");
-const {HttpError, sendEmail} = require("../helpers");
+const {HttpError, sendEmail, cloudinary} = require("../helpers");
 const controlWrapper = require("../decorators/controllWrapper");
 const {hash, compare} = require("bcrypt");
 const {sign} = require("jsonwebtoken");
@@ -148,24 +148,17 @@ const controllerUpdateSubscription = async  (req, res) => {
         res.json();
 }
 
-const controllerUpdateAvatar = async  (req, res) => {
+const controllerUpdateAvatar = async (req, res) => {
     const {_id} = req.user;
     const {path: oldPath, filename} = req.file;
+    const fileData = await cloudinary.uploader.upload(oldPath, {folder: "avatars",})
     const newPath = path.join(avatarsDir, filename);
     await fs.rename(oldPath, newPath);
-    await Jimp.read(newPath)
-        .then((image) => {
-            return image
-                .resize(250, 250)
-                .write(newPath);
-        })
-        .catch((e) => {
-            throw HttpError (400, "Bad request")
-        });
-    const avatarURL = path.join('avatars', filename);
-    await User.findByIdAndUpdate(_id, {avatarURL: avatarURL})
+    await fs.unlink(oldPath);
+
+    await User.findByIdAndUpdate(_id, {avatarURL: fileData.url})
     res.json({
-        avatarURL: avatarURL
+        avatarURL:avatarURL
     });
 }
 
