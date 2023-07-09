@@ -111,20 +111,20 @@
         "tags": ["Auth"],
         "summary": "User logout",
         "parameters": [],
-        "security": [{ "Bearer": [] }]
-      },
-      "responses": {
-        "204": {
-          "description": "The user is logged out",
-          "content": {}
-        },
-        "401": {
-          "description": "Not authorized",
-          "content": {}
-        },
-        "500": {
-          "description": "Server error",
-          "content": {}
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "The user is logged out",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
         }
       }
     },
@@ -133,26 +133,90 @@
         "tags": ["Auth"],
         "summary": "Get information about the current user",
         "parameters": [],
-        "security": [{ "Bearer": [] }]
-      },
-      "responses": {
-        "200": {
-          "description": "Information found",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Information found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/avatars": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Update user avatar",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User's avatar",
+          "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CurrentUserResponse"
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Avatar's image"
+                  }
+                }
               }
             }
           }
         },
-        "401": {
-          "description": "Not authorized",
-          "content": {}
-        },
-        "500": {
-          "description": "Server error",
-          "content": {}
+        "responses": {
+          "200": {
+            "description": "User's avatar update successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "avatarURL": {
+                            "type": "string",
+                            "description": "User's avatar",
+                            "example": "https://www.gravatar.com/avatar/80e4d520990385ee498390e7a735e7b6"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
         }
       }
     }
