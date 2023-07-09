@@ -1,5 +1,6 @@
 const HttpError = require("../helpers/HttpError");
 const {joiAuthSchemas} = require("../models/user");
+const controlWrapper = require("../decorators/controllWrapper");
 
 const validateRegister = async (req, res, next) => {
 
