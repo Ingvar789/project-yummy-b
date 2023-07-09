@@ -31,11 +31,8 @@
     "multer": "^1.4.5-lts.1",
     "nanoid": "^3.3.6",
     "nodemailer": "^6.9.3",
-<<<<<<< HEAD
-    "y": "^0.3.2"
-=======
+    "y": "^0.3.2",
     "swagger-ui-express": "^5.0.0"
->>>>>>> 235c4c45dd98ea61f382d6d72c8404ed4c378a32
   },
   "devDependencies": {
     "eslint": "7.19.0",
