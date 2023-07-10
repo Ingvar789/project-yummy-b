@@ -1,23 +1,16 @@
-const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
-const { UKR_NET_EMAIL, UKR_NET_PASSWORD } = process.env;
+const { SENDGRID_API_KEY } = process.env;
 
-const nodemailerConfig = {
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: true,
-  auth: {
-    user: UKR_NET_EMAIL,
-    pass: UKR_NET_PASSWORD,
-  },
-};
-
-const transport = nodemailer.createTransport(nodemailerConfig);
+sgMail.setApiKey(SENDGRID_API_KEY);
 
 const sendEmail = async (data) => {
-  const email = { ...data, from: UKR_NET_EMAIL };
-  await transport.sendMail(email);
+  const email = {
+    ...data,
+    from: "crypto100880@gmail.com",
+  };
+  await sgMail.send(email);
   return true;
 };
 
