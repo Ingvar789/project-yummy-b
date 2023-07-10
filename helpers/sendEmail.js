@@ -4,8 +4,8 @@ require("dotenv").config();
 const { UKR_NET_EMAIL, UKR_NET_PASSWORD } = process.env;
 
 const nodemailerConfig = {
-  host: "smtp.ukr.net",
-  port: 2525,
+  host: "smtp-relay.brevo.com",
+  port: 587,
   secure: true,
   auth: {
     user: UKR_NET_EMAIL,
