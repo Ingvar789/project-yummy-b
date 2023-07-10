@@ -2349,17 +2349,10 @@
     "snapdragon" "^0.8.1"
     "to-regex" "^3.0.1"
 
-<<<<<<< HEAD
 "expect@^25.5.0":
   "integrity" "sha512-w7KAXo0+6qqZZhovCaBVPSIqQp7/UTcx4M9uKt2m6pd2VB1voyC8JizLRqeEqud3AAVP02g+hbErDu5gu64tlA=="
   "resolved" "https://registry.npmjs.org/expect/-/expect-25.5.0.tgz"
   "version" "25.5.0"
-=======
-"express@>=4.0.0 || >=5.0.0-beta", "express@4.17.1":
-  "integrity" "sha512-mHJ9O79RqluphRrcw2X/GTh3k9tVv8YcoyY4Kkh4WDMUYKRZUq0h1o0w2rrrxBqM7VoeUVqgb27xlEMXTnYt4g=="
-  "resolved" "https://registry.npmjs.org/express/-/express-4.17.1.tgz"
-  "version" "4.17.1"
->>>>>>> 235c4c45dd98ea61f382d6d72c8404ed4c378a32
   dependencies:
     "@jest/types" "^25.5.0"
     "ansi-styles" "^4.0.0"
@@ -5491,11 +5484,6 @@
     "has-flag" "^4.0.0"
     "supports-color" "^7.0.0"
 
-"symbol-tree@^3.2.2":
-  "integrity" "sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw=="
-  "resolved" "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz"
-  "version" "3.2.4"
-
 "swagger-ui-dist@>=5.0.0":
   "integrity" "sha512-c1KmAjuVODxw+vwkNLALQZrgdlBAuBbr2xSPfYrJgseEi7gFKcTvShysPmyuDI4kcUa1+5rFpjWvXdusKY74mg=="
   "resolved" "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-5.1.0.tgz"
@@ -5507,6 +5495,11 @@
   "version" "5.0.0"
   dependencies:
     "swagger-ui-dist" ">=5.0.0"
+
+"symbol-tree@^3.2.2":
+  "integrity" "sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw=="
+  "resolved" "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz"
+  "version" "3.2.4"
 
 "table@^6.0.4":
   "integrity" "sha512-LFNeryOqiQHqCVKzhkymKwt6ozeRhlm8IL1mE8rNUurkir4heF6PzMyRgaTa4tlyPTGGgXuvVOF/OLWiH09Lqw=="
