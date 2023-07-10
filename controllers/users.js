@@ -4,7 +4,7 @@ const controlWrapper = require("../decorators/controllWrapper");
 const { hash, compare } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const fs = require("fs").promises;
-// const Jimp = require("jimp");
+const Jimp = require("jimp");
 const gravatar = require("gravatar");
 const { nanoid } = require("nanoid");
 
@@ -13,33 +13,37 @@ const { SECRET_KEY } = process.env;
 
 const controllerRegister = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (user) {
-    throw HttpError(409, "Email in use");
-  }
-  const hashPassword = await hash(password, 10);
-  const verificationToken = nanoid();
+
   let avatarURL;
   // if avatar was sent
   if (req.file) {
     const { path: oldPath } = req.file;
+    await Jimp.read(oldPath)
+        .then((image) => {
+          return image.resize(250, 250).write(oldPath);
+        })
+        .catch((e) => {
+          throw HttpError(400, "Bad request");
+        });
+
     const fileData = await cloudinary.uploader.upload(oldPath, {
       folder: "avatars",
     });
     await fs.unlink(oldPath);
-    // Jimp.read(newPath)
-    //   .then((image) => {
-    //     return image.resize(250, 250).write(newPath);
-    //   })
-    //   .catch((e) => {
-    //     throw HttpError(400, "Bad request");
-    //   });
+
     avatarURL = fileData.url;
   }
   // if avatar was not sent
   else {
     avatarURL = gravatar.url(email, { s: "250" });
   }
+
+  const user = await User.findOne({ email });
+  if (user) {
+    throw HttpError(409, "Email in use");
+  }
+  const hashPassword = await hash(password, 10);
+  const verificationToken = nanoid();
 
   const newUser = await User.create({
     ...req.body,
@@ -67,34 +71,32 @@ const controllerRegister = async (req, res) => {
 const controllerVerifyEmail = async (req, res) => {
   const { verificationToken } = req.params;
   const user = await User.findOne({ verificationToken });
+
   if (!user) {
     throw HttpError(404, "User not found");
   }
+
   await User.findByIdAndUpdate(user._id, {
     verify: true,
-    verificationToken: null,
+    verificationToken: "",
   });
+
+  const payload = {
+    id: user._id,
+  };
+
+  const token = sign(payload, SECRET_KEY, { expiresIn: "23h" });
+  await User.findByIdAndUpdate(user._id, { token });
 
   res.status(200).json({
     message: "Verification successful",
+    token,
+    user: {
+      email: user.email,
+      subscription: user.subscription,
+    }
   });
 };
-
-// const controllerVerifyEmail = async (req, res) => {
-//   const { verificationToken } = req.params;
-//   const user = await User.findOne({ verificationToken });
-//   if (!user) {
-//     throw HttpError(404, "User not found");
-//   }
-//   await User.findByIdAndUpdate(user._id, {
-//     verify: true,
-//     verificationToken: "",
-//   });
-
-//   res.json({
-//     message: "Verification successful",
-//   });
-// };
 
 const controllerResendVerifyEmail = async (req, res) => {
   const { email } = req.body;
@@ -125,7 +127,6 @@ const controllerLogin = async (req, res) => {
   if (!user) {
     throw HttpError(401, "Email or password is wrong");
   }
-
   if (!user.verify) {
     throw HttpError(401, "Email is not verified");
   }
@@ -139,7 +140,7 @@ const controllerLogin = async (req, res) => {
   };
   const token = sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
-  console.log(res.statusCode);
+
   res.json({
     token,
     user: {

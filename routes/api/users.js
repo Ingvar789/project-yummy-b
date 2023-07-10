@@ -34,6 +34,4 @@ router.get("/verify/:verificationToken",  controllerVerifyEmail);
 // resend email verification
 router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
 
-
-
 module.exports = router;
