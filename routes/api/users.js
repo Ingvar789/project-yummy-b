@@ -19,11 +19,6 @@ const router = express.Router();
 
 // register
 router.post("/register", upload.single('avatar'), validate(joiAuthSchemas.userSchemaRegisterJoi), controllerRegister);
-
-// email verify
-router.get("/verify/:verificationToken",  controllerVerifyEmail);
-// resend email verification
-router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
 // login
 router.post("/login", validate(joiAuthSchemas.userSchemaLoginJoi), controllerLogin);
 // logout
@@ -34,6 +29,11 @@ router.get("/current", authentication, controllerGetCurrent);
 router.patch("/", authentication, validate(joiAuthSchemas.userSchemaSubscriptionJoi), controllerUpdateSubscription);
 // avatar
 router.patch("/avatars", authentication, upload.single('avatar'), controllerUpdateAvatar);
+// email verify
+router.get("/verify/:verificationToken",  controllerVerifyEmail);
+// resend email verification
+router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
+
 
 
 module.exports = router;
