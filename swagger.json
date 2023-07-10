@@ -1,13 +1,9 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.0.1",
   "info": {
     "version": "v1.0",
     "title": "SoYummy API",
-    "description": "API documentation for app",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
+    "description": "API documentation for app"
   },
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
