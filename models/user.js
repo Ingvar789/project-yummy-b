@@ -42,11 +42,17 @@ const userEmailVerificationJoi = Joi.object({
     .required()
     .messages({ "any.required": `missing required email field` }),
 });
+const userManageJoi = Joi.object({
+    name: Joi.string(),
+    avatarURL: Joi.string()
+
+})
 const joiAuthSchemas = {
   userSchemaRegisterJoi,
   userSchemaLoginJoi,
   userSchemaSubscriptionJoi,
   userEmailVerificationJoi,
+  userManageJoi
 };
 
 const userSchemaMongoose = new Schema(

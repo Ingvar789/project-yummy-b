@@ -198,18 +198,22 @@ const controllerUpdateSubscription = async (req, res) => {
   res.status(200).json({ _id, email, subscription: result.subscription });
 };
 
-const controllerUpdateAvatar = async (req, res) => {
-  const { _id } = req.user;
+const controllerEditProfile = async (req, res) => {
+  const { _id,  } = req.user;
+  const { name } = req.body;
   const { path: oldPath } = req.file;
   const fileData = await cloudinary.uploader.upload(oldPath, {
     folder: "avatars",
-  });
+  })
   await fs.unlink(oldPath);
-
-  await User.findByIdAndUpdate(_id, { avatarURL: fileData.url });
+if(name || fileData){ 
+  await User.findByIdAndUpdate(_id, {name},
+    { avatarURL: fileData.url });
   res.json({
     avatarURL: fileData.url,
+    name,
   });
+}
 };
 
 module.exports = {
@@ -218,7 +222,7 @@ module.exports = {
   controllerLogout: controlWrapper(controllerLogout),
   controllerGetCurrent: controlWrapper(controllerGetCurrent),
   controllerUpdateSubscription: controlWrapper(controllerUpdateSubscription),
-  controllerUpdateAvatar: controlWrapper(controllerUpdateAvatar),
+  controllerEditProfile: controlWrapper(controllerEditProfile),
   controllerVerifyEmail: controlWrapper(controllerVerifyEmail),
   controllerResendVerifyEmail: controlWrapper(controllerResendVerifyEmail),
 };
