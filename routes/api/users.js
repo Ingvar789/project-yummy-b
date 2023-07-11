@@ -30,9 +30,10 @@ router.patch("/", authentication, validate(joiAuthSchemas.userSchemaSubscription
 // avatar
 router.patch("/avatars", authentication, upload.single('avatar'), controllerUpdateAvatar);
 // email verify
-router.get("/verify/:verificationToken",  controllerVerifyEmail);
+router.get("/verify/:verificationToken", controllerVerifyEmail);
 // resend email verification
 router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
+
 
 
 
