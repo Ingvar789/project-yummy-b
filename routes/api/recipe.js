@@ -1,15 +1,15 @@
-const express = require('express')
-const authentication = require("../../middlewares/authentication")
+const express = require("express");
+const authentication = require("../../middlewares/authentication");
 const isValidId = require("../../middlewares/isValidId");
 const {joiSchemas} = require("../../models/recipe");
 const {
   validateAddRecipe,
   validateRecipeUpdate,
-  validateRecipeFavoriteUpdate,
-  validateArr,
+  validateRecipeFavoriteUpdate
  } = require("../../middlewares/recipeValidation");
 
 const {
+  controllerCategoryList,
   controllerListRecipe,
   controllerGetRecipeById,
   controllerAddRecipe,
@@ -20,24 +20,22 @@ const {
 } = require("../../controllers/recipe");
 
 
-const router = express.Router()
+const router = express.Router();
 
 router.use(authentication);
 
-router.get('/', controllerListRecipe);
+router.get("/category-list", controllerCategoryList);
 
-router.get('/:recipeId', isValidId, controllerGetRecipeById);
+router.get("/", controllerListRecipe);
 
-router.post('/', validateAddRecipe, controllerAddRecipe );
+router.get("/:recipeId", isValidId, controllerGetRecipeById);
 
-router.delete('/:recipeId', isValidId, controllerRemoveRecipe)
+router.post("/", validateAddRecipe, controllerAddRecipe);
 
-router.put('/:recipeId', isValidId, validateRecipeUpdate, controllerUpdateRecipe);
+router.delete("/:recipeId", isValidId, controllerRemoveRecipe);
+
+router.put("/:recipeId", isValidId, validateRecipeUpdate, controllerUpdateRecipe);
 
 router.patch('/:recipeId/favorite', isValidId, validateRecipeFavoriteUpdate, controllerUpdateStatusRecipe)
 
-router.get('/:recipeId', isValidId, controllerGetRecipeById);
-
-router.get("/categories/:categoryName", joiSchemas.getCategoriesJoi, validateArr, kindOfRecipe);
-
-module.exports = router
+module.exports = router;
