@@ -19,12 +19,12 @@ const controllerRegister = async (req, res) => {
   if (req.file) {
     const { path: oldPath } = req.file;
     await Jimp.read(oldPath)
-        .then((image) => {
-          return image.resize(250, 250).write(oldPath);
-        })
-        .catch((e) => {
-          throw HttpError(400, "Bad request");
-        });
+      .then((image) => {
+        return image.resize(250, 250).write(oldPath);
+      })
+      .catch((e) => {
+        throw HttpError(400, "Bad request");
+      });
 
     const fileData = await cloudinary.uploader.upload(oldPath, {
       folder: "avatars",
@@ -55,7 +55,7 @@ const controllerRegister = async (req, res) => {
   const verifyEmail = {
     to: email,
     subject: "Verify Email",
-    html: `<h1>Welcome to <span style="font-size:40px;">So Yummy</span> app!</h1>
+    html: `<h1>Welcome to <span style="font-size:40px; font-style: italic;">"So Yummy"</span> app!</h1>
      <p>Follow the link to complete the registration</p><a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}"> Click to verify email </a>`,
   };
 
@@ -95,7 +95,7 @@ const controllerVerifyEmail = async (req, res) => {
     user: {
       email: user.email,
       subscription: user.subscription,
-    }
+    },
   });
 };
 
@@ -112,7 +112,7 @@ const controllerResendVerifyEmail = async (req, res) => {
   const verifyEmail = {
     to: email,
     subject: "Verify Email",
-    html: `<h1>Welcome to <span style="font-size:40px;">So Yummy</span> app!</h1>
+    html: `<h1>Welcome to <span style="font-size:40px; font-style: italic;">"So Yummy"</span> app!</h1>
      <h3 style="text-align: center; color: #ffffff;">Follow the link to complete the registration</h3><a target="_blank" href="${BASE_URL}/users/verify/${user.verificationToken}"> Click to verify your email </a>`,
   };
 
@@ -187,7 +187,7 @@ const controllerUpdateSubscription = async (req, res) => {
   const subscribedEmail = {
     to: email,
     subject: "Subscribed successfully",
-    html: `<div style="background-color: #ADFF2F; text-align: center; padding: 20px;"><h1>Welcome to <span style="font-size:40px;">So Yummy</span> app!</h1> 
+    html: `<div style="background-color: #99FF99; text-align: center; padding: 20px;"><h1>Welcome to <span style="font-size:40px; font-style: italic;" >"So Yummy"</span> app!</h1> 
     <h5>You have successfully subscribed to the newsletter from our app. Thank you!</h5></div>`,
   };
 
