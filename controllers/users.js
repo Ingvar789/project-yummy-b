@@ -92,6 +92,7 @@ const controllerVerifyEmail = async (req, res) => {
   res.status(200).json({
     message: "Verification successful",
     token,
+    verify: true,
     user: {
       email: user.email,
       subscription: user.subscription,
@@ -145,6 +146,7 @@ const controllerLogin = async (req, res) => {
 
   res.json({
     token,
+    verify: true,
     user: {
       email: user.email,
       subscription: user.subscription,

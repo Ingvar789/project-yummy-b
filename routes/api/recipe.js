@@ -19,9 +19,9 @@ const {
 
 const router = express.Router();
 
-router.get("/category-list", controllerCategoryList);
-
 router.use(authentication);
+
+router.get("/category-list", controllerCategoryList);
 
 router.get("/", controllerListRecipe);
 
@@ -31,18 +31,8 @@ router.post("/", validateAddRecipe, controllerAddRecipe);
 
 router.delete("/:recipeId", isValidId, controllerRemoveRecipe);
 
-router.put(
-  "/:recipeId",
-  isValidId,
-  validateRecipeUpdate,
-  controllerUpdateRecipe
-);
+router.put("/:recipeId", isValidId, validateRecipeUpdate, controllerUpdateRecipe);
 
-router.patch(
-  "/:recipeId/favorite",
-  isValidId,
-  validateRecipeFavoriteUpdate,
-  controllerUpdateStatusRecipe
-);
+router.patch("/:recipeId/favorite", isValidId, validateRecipeFavoriteUpdate, controllerUpdateStatusRecipe);
 
 module.exports = router;

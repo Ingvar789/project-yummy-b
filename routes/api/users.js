@@ -1,4 +1,8 @@
 const express = require("express");
+const authentication = require("../../middlewares/authentication");
+const upload = require("../../middlewares/upload");
+const {validate} = require("../../middlewares/userValidation");
+const {joiAuthSchemas} = require("../../models/user");
 const {
     controllerRegister,
     controllerLogin,
@@ -10,10 +14,7 @@ const {
     controllerResendVerifyEmail
         } = require("../../controllers/users");
 
-const authentication = require("../../middlewares/authentication");
-const upload = require("../../middlewares/upload");
-const {validate} = require("../../middlewares/userValidation");
-const {joiAuthSchemas} = require("../../models/user");
+
 
 const router = express.Router();
 
