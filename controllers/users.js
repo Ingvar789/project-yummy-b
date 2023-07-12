@@ -89,13 +89,15 @@ const controllerVerifyEmail = async (req, res) => {
   const token = sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
 
+  const verifiedUser = await User.findById(user._id);
+
   res.status(200).json({
     message: "Verification successful",
-    token,
-    verify: true,
+    token: verifiedUser.token,
+    verify: verifiedUser.verify,
     user: {
-      email: user.email,
-      subscription: user.subscription,
+      email: verifiedUser.email,
+      subscription: verifiedUser.subscription,
     },
   });
 };
@@ -161,10 +163,12 @@ const controllerLogout = async (req, res) => {
 };
 
 const controllerGetCurrent = async (req, res) => {
-  const { email, subscription } = req.user;
+  const { email, subscription, name, avatarURL } = req.user;
   res.json({
     email,
     subscription,
+    name,
+    avatarURL,
   });
 };
 
@@ -198,18 +202,34 @@ const controllerUpdateSubscription = async (req, res) => {
   res.status(200).json({ _id, email, subscription: result.subscription });
 };
 
-const controllerUpdateAvatar = async (req, res) => {
-  const { _id } = req.user;
-  const { path: oldPath } = req.file;
-  const fileData = await cloudinary.uploader.upload(oldPath, {
-    folder: "avatars",
-  });
-  await fs.unlink(oldPath);
+const controllerUpdateUser = async (req, res) => {
+  const updateData = req.body;
+  const avatar = req.file;
 
-  await User.findByIdAndUpdate(_id, { avatarURL: fileData.url });
-  res.json({
-    avatarURL: fileData.url,
-  });
+  try {
+    const { _id } = req.user;
+
+    if (avatar) {
+      const { path: oldPath } = avatar;
+      const fileData = await cloudinary.uploader.upload(oldPath, {
+        folder: "avatars",
+      });
+      await fs.unlink(oldPath);
+      await User.findByIdAndUpdate(_id, { avatarURL: fileData.url });
+    }
+
+    if (updateData.name) {
+      await User.findByIdAndUpdate(_id, { name: updateData.name });
+    }
+
+    const updateUser = await User.findById(_id);
+
+    res.json(updateUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+  }
+
 };
 
 module.exports = {
@@ -218,7 +238,7 @@ module.exports = {
   controllerLogout: controlWrapper(controllerLogout),
   controllerGetCurrent: controlWrapper(controllerGetCurrent),
   controllerUpdateSubscription: controlWrapper(controllerUpdateSubscription),
-  controllerUpdateAvatar: controlWrapper(controllerUpdateAvatar),
+  controllerUpdateUser: controlWrapper(controllerUpdateUser),
   controllerVerifyEmail: controlWrapper(controllerVerifyEmail),
   controllerResendVerifyEmail: controlWrapper(controllerResendVerifyEmail),
 };
