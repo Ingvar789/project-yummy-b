@@ -89,13 +89,15 @@ const controllerVerifyEmail = async (req, res) => {
   const token = sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
 
+  const verifiedUser = await User.findById(user._id);
+
   res.status(200).json({
     message: "Verification successful",
-    token,
-    verify: true,
+    token: verifiedUser.token,
+    verify: verifiedUser.verify,
     user: {
-      email: user.email,
-      subscription: user.subscription,
+      email: verifiedUser.email,
+      subscription: verifiedUser.subscription,
     },
   });
 };
@@ -161,10 +163,12 @@ const controllerLogout = async (req, res) => {
 };
 
 const controllerGetCurrent = async (req, res) => {
-  const { email, subscription } = req.user;
+  const { email, subscription, name, avatarURL } = req.user;
   res.json({
     email,
     subscription,
+    name,
+    avatarURL,
   });
 };
 
@@ -197,7 +201,6 @@ const controllerUpdateSubscription = async (req, res) => {
 
   res.status(200).json({ _id, email, subscription: result.subscription });
 };
-
 
 const controllerUpdateUser = async (req, res) => {
   const updateData = req.body;
