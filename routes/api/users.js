@@ -42,7 +42,7 @@ router.patch(
 );
 // avatar
 router.patch(
-  "/updateUser",
+  "/update-user",
   authentication,
   upload.single("avatar"),
   controllerUpdateUser
