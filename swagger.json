@@ -8,13 +8,17 @@
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
   "servers": [
-    { "url": "http://localhost:3000" },
-    { "url": "https://project-yummy-b.onrender.com" }
+    { "url": "https://project-yummy-b.onrender.com" },
+    { "url": "http://localhost:3000" }
   ],
   "tags": [
     {
       "name": "Auth",
       "description": "Authorization endpoints"
+    },
+    {
+      "name": "Recipes",
+      "description": "Recipes endpoints"
     }
   ],
   "paths": {
@@ -152,13 +156,13 @@
         }
       }
     },
-    "/users/avatars": {
+    "/users/update-user": {
       "patch": {
         "tags": ["Auth"],
-        "summary": "Update user avatar",
+        "summary": "Update info about user",
         "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "User's avatar",
+          "description": "User's info",
           "required": true,
           "content": {
             "multipart/form-data": {
@@ -168,7 +172,11 @@
                   "avatar": {
                     "type": "string",
                     "format": "binary",
-                    "description": "Avatar's image"
+                    "description": "User's avatar"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User's name"
                   }
                 }
               }
@@ -177,26 +185,135 @@
         },
         "responses": {
           "200": {
-            "description": "User's avatar update successful",
+            "description": "User's info update successfully",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User's avatar",
+                          "example": "https://www.gravatar.com/avatar/80e4d520990385ee498390e7a735e7b6"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "User's name",
+                          "example": "Margo"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/subscribe": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Update user's subscription",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User's email",
+          "required": ["email"],
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "format": "email",
+                    "example": "user@testmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User subscribed successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "type": "object",
-                    "properties": {
-                      "user": {
-                        "type": "object",
-                        "properties": {
-                          "avatarURL": {
-                            "type": "string",
-                            "description": "User's avatar",
-                            "example": "https://www.gravatar.com/avatar/80e4d520990385ee498390e7a735e7b6"
-                          }
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "string",
+                          "description": "User's id"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User's email",
+                          "format": "email"
+                        },
+                        "subscription": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "User's subscription"
                         }
                       }
                     }
+                  },
+                  "example": {
+                    "userId": "AeHIrLTr6JkxGE6SN-0Rw",
+                    "email": "user@testmail.com",
+                    "subscription": true
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/recipes/category-list": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Return a list of categories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A JSON array of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryList"
                 }
               }
             }
@@ -259,9 +376,9 @@
           }
         },
         "example": {
+          "userId": "AeHIrLTr6JkxGE6SN-0Rw",
           "name": "Mary",
-          "email": "user@testmail.com",
-          "userId": "AeHIrLTr6JkxGE6SN-0Rw"
+          "email": "user@testmail.com"
         }
       },
       "LoginRequest": {
@@ -305,6 +422,28 @@
             "format": "email"
           }
         }
+      },
+      "CategoryList": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "Beef",
+          "Breakfast",
+          "Chicken",
+          "Dessert",
+          "Goat",
+          "Lamb",
+          "Miscellaneous",
+          "Pasta",
+          "Pork",
+          "Seafood",
+          "Side",
+          "Starter",
+          "Vegan",
+          "Vegetarian"
+        ]
       }
     },
     "securitySchemes": {
