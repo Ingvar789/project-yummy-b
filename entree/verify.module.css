@@ -1,0 +1,10 @@
+div {
+  width: 1400px;
+  height: 100vh;
+  margin: 0px 20px;
+  height: auto;
+  border-collapse: none;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ffffff;
+}
