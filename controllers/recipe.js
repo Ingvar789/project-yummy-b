@@ -1,5 +1,5 @@
-// const HttpError = require("../helpers/HttpError");
-// const { Recipe} = require("../models/recipe");
+const HttpError = require("../helpers/HttpError");
+const { Recipe} = require("../models/recipe");
 const controlWrapper = require("../decorators/controllWrapper");
 
 const controllerCategoryList = async (req, res) => {
@@ -30,7 +30,12 @@ const controllerListRecipe = async (req, res) => {
 };
 
 const controllerGetRecipeById = async (req, res) => {
-  res.json(req.body);
+  const {recipeId}=req.params;
+  const recipe = await Recipe.findById(recipeId);
+  if (!recipe){
+    throw HttpError(404, "Not found")
+  }
+  res.json(recipe);
 };
 
 const controllerAddRecipe = async (req, res) => {
