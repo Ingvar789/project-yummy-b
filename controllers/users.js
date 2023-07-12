@@ -146,12 +146,16 @@ const controllerLogin = async (req, res) => {
   const token = sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.json({
-    token,
-    verify: true,
+  const verifiedUser = await User.findById(user._id);
+
+  res.status(200).json({
+    token: verifiedUser.token,
+    verify: verifiedUser.verify,
     user: {
-      email: user.email,
-      subscription: user.subscription,
+      email: verifiedUser.email,
+      subscription: verifiedUser.subscription,
+      name: verifiedUser.name,
+      avatarURL: verifiedUser.avatarURL,
     },
   });
 };
