@@ -15,14 +15,58 @@ const joiSchemas = {
   recipeSchemaJoi,
   updateFavoriteSchemaJoi,
 }
-const recipeSchemaMongoose = new Schema({
-  name: {
-    type: String,
-    required: [true, 'Set name for recipe'],
-  }
-}, {versionKey: false, timestamps: true});
+// const recipeSchemaMongoose = new Schema({
+//   name: {
+//     type: String,
+//     required: [true, 'Set name for recipe'],
+//   }
+// }, {versionKey: false, timestamps: true});
 
-const Recipe = model("contact", recipeSchemaMongoose);
+const recipeSchemaMongoose = new Schema(
+  {
+    title: {
+      type: String,
+      require: true,
+    },
+    category: {
+      type: String,
+      require: true,
+    },
+    area: {
+      type: String,
+    },
+    instructions: {
+      type: String,
+      require: true,
+    },
+    description: {
+      type: String,
+      require: true,
+    },
+    preview: {
+      type: String,
+      require: true,
+    },
+    time: {
+      type: String,
+      require: true,
+    },
+    youtube: {
+      type: String,
+    },
+    tags: {
+      type: Array,
+    },
+    ingredients: {
+      type: Array,
+      require: true,
+    },
+  },
+  { versionKey: false }
+);
+
+
+const Recipe = model("recipes", recipeSchemaMongoose);
 
 recipeSchemaMongoose.post("save", handleMongooseError);
 
