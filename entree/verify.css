@@ -1,3 +1,13 @@
+.main-pic {
+  position: relative;
+  background: url(logo.svg) no-repeat top left;
+  background-size: contain;
+}
+.linkTo {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+}
 div {
   width: 1400px;
   height: 100vh;
