@@ -1,5 +1,5 @@
 const express = require("express");
-const authentication = require("../../middlewares/authentication");
+// const authentication = require("../../middlewares/authentication");
 const isValidId = require("../../middlewares/isValidId");
 const {
   validateAddRecipe,
@@ -19,7 +19,7 @@ const {
 
 const router = express.Router();
 
-router.use(authentication);
+// router.use(authentication);
 
 router.get("/category-list", controllerCategoryList);
 
