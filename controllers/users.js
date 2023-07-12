@@ -198,6 +198,7 @@ const controllerUpdateSubscription = async (req, res) => {
   res.status(200).json({ _id, email, subscription: result.subscription });
 };
 
+
 const controllerUpdateUser = async (req, res) => {
   const updateData = req.body;
   const avatar = req.file;
@@ -225,6 +226,7 @@ const controllerUpdateUser = async (req, res) => {
     console.error(error);
     res.status(500);
   }
+
 };
 
 module.exports = {
