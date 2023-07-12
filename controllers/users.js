@@ -198,22 +198,35 @@ const controllerUpdateSubscription = async (req, res) => {
   res.status(200).json({ _id, email, subscription: result.subscription });
 };
 
-const controllerEditProfile = async (req, res) => {
-  const { _id,  } = req.user;
-  const { name } = req.body;
-  const { path: oldPath } = req.file;
-  const fileData = await cloudinary.uploader.upload(oldPath, {
-    folder: "avatars",
-  })
-  await fs.unlink(oldPath);
-if(name || fileData){ 
-  await User.findByIdAndUpdate(_id, {name},
-    { avatarURL: fileData.url });
-  res.json({
-    avatarURL: fileData.url,
-    name,
-  });
-}
+
+const controllerUpdateUser = async (req, res) => {
+  const updateData = req.body;
+  const avatar = req.file;
+
+  try {
+    const { _id } = req.user;
+
+    if (avatar) {
+      const { path: oldPath } = avatar;
+      const fileData = await cloudinary.uploader.upload(oldPath, {
+        folder: "avatars",
+      });
+      await fs.unlink(oldPath);
+      await User.findByIdAndUpdate(_id, { avatarURL: fileData.url });
+    }
+
+    if (updateData.name) {
+      await User.findByIdAndUpdate(_id, { name: updateData.name });
+    }
+
+    const updateUser = await User.findById(_id);
+
+    res.json(updateUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+  }
+
 };
 
 module.exports = {
@@ -222,7 +235,7 @@ module.exports = {
   controllerLogout: controlWrapper(controllerLogout),
   controllerGetCurrent: controlWrapper(controllerGetCurrent),
   controllerUpdateSubscription: controlWrapper(controllerUpdateSubscription),
-  controllerEditProfile: controlWrapper(controllerEditProfile),
+  controllerUpdateUser: controlWrapper(controllerUpdateUser),
   controllerVerifyEmail: controlWrapper(controllerVerifyEmail),
   controllerResendVerifyEmail: controlWrapper(controllerResendVerifyEmail),
 };
