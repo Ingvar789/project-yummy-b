@@ -2,6 +2,7 @@ const express = require("express");
 const authentication = require("../../middlewares/authentication");
 const upload = require("../../middlewares/upload");
 const {validate} = require("../../middlewares/userValidation");
+const {validateEdit} = require("../../middlewares/validateEdit");
 const {joiAuthSchemas} = require("../../models/user");
 const {
     controllerRegister,
@@ -9,7 +10,7 @@ const {
     controllerGetCurrent,
     controllerLogout,
     controllerUpdateSubscription,
-    controllerUpdateAvatar,
+    controllerEditProfile,
     controllerVerifyEmail,
     controllerResendVerifyEmail
         } = require("../../controllers/users");
@@ -29,7 +30,7 @@ router.get("/current", authentication, controllerGetCurrent);
 // subscription
 router.patch("/subscribe", authentication, validate(joiAuthSchemas.userSchemaSubscriptionJoi), controllerUpdateSubscription);
 // avatar
-router.patch("/avatars", authentication, upload.single('avatar'), controllerUpdateAvatar);
+router.patch("/edit", authentication, upload.single('avatar'),  controllerEditProfile);
 // email verify
 router.get("/verify/:verificationToken",  controllerVerifyEmail);
 // resend email verification
