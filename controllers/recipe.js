@@ -1,5 +1,5 @@
 const HttpError = require("../helpers/HttpError");
-const { Recipe} = require("../models/recipe");
+const { Recipe } = require("../models/recipe");
 const controlWrapper = require("../decorators/controllWrapper");
 
 const controllerCategoryList = async (req, res) => {
@@ -20,9 +20,26 @@ const controllerCategoryList = async (req, res) => {
     "Vegetarian",
   ];
 
-  const sortedCategories = categories.sort(); 
+  const sortedCategories = categories.sort();
 
   res.json(sortedCategories);
+};
+
+const controllerMainPage = async (req, res) => {
+  const categories = ["Breakfast", "Miscellaneous", "Chicken", "Dessert"];
+
+  const latestRecipes = {};
+
+  const allRecipe = await Recipe.find();
+
+  categories.forEach((category) => {
+    const recipes = allRecipe
+      .filter((recipe) => recipe.category === category)
+      .slice(-4);
+    latestRecipes[category] = recipes;
+  });
+
+  res.json(latestRecipes);
 };
 
 const controllerListRecipe = async (req, res) => {
@@ -30,10 +47,10 @@ const controllerListRecipe = async (req, res) => {
 };
 
 const controllerGetRecipeById = async (req, res) => {
-  const {recipeId}=req.params;
+  const { recipeId } = req.params;
   const recipe = await Recipe.findById(recipeId);
-  if (!recipe){
-    throw HttpError(404, "Not found")
+  if (!recipe) {
+    throw HttpError(404, "Not found");
   }
   res.json(recipe);
 };
@@ -57,6 +74,7 @@ const controllerUpdateStatusRecipe = async (req, res) => {
 
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
+  controllerMainPage: controlWrapper(controllerMainPage),
   controllerListRecipe: controlWrapper(controllerListRecipe),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
