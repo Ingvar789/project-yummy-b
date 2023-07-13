@@ -66,7 +66,7 @@ const controllerRegister = async (req, res) => {
       name: newUser.name,
       email: newUser.email,
       subscription: newUser.subscription,
-      avatarURL:newUser.avatarURL,
+      avatarURL: newUser.avatarURL,
       verificationToken: newUser.verificationToken,
     },
   });
@@ -99,6 +99,8 @@ const controllerVerifyEmail = async (req, res) => {
     token: verifiedUser.token,
     verify: verifiedUser.verify,
     user: {
+      name: verifiedUser.name,
+      avatarURL: verifiedUser.avatarURL,
       email: verifiedUser.email,
       subscription: verifiedUser.subscription,
     },
