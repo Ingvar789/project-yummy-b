@@ -44,7 +44,7 @@ const controllerMainPage = async (req, res) => {
 };
 
 const controllerGetRecipesByCategory = async (req, res) => {
-  let category = req.params.category;
+  let category = req.params.categoryName;
   category = category.charAt(0).toUpperCase() + category.slice(1);
 
   const { page = 1, limit = 8 } = req.query;
@@ -112,7 +112,7 @@ const controllerSearchByTitle = async (req, res) => {
     throw HttpError(404, "recipe not found");
   }
   return res.json(searchRecipe);
-};
+}
 
 const controllerSearchByIngredients = async (req, res) => {
   const { id } = req.body;

@@ -33,7 +33,7 @@ router.get("/ingredients", controllerSearchByIngredients);
 
 router.get("/main-page", controllerMainPage);
 
-router.get("/:category", controllerGetRecipesByCategory);
+router.get("/category/:categoryName", controllerGetRecipesByCategory);
 
 router.get("/", controllerListRecipe);
 
