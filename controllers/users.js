@@ -65,7 +65,8 @@ const controllerRegister = async (req, res) => {
     user: {
       name: newUser.name,
       email: newUser.email,
-      avatarURL: newUser.avatarURL,
+      subscription: newUser.subscription,
+      avatarURL:newUser.avatarURL,
       verificationToken: newUser.verificationToken,
     },
   });

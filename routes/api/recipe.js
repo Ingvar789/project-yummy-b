@@ -25,36 +25,28 @@ const router = express.Router();
 
 // router.use(authentication);
 
+// get categories
 router.get("/category-list", controllerCategoryList);
-
-router.get("/search", controllerSearchByTitle);
-
-router.get("/ingredients", controllerSearchByIngredients);
-
+// recipes by categories for main page
 router.get("/main-page", controllerMainPage);
-
+// recipes by category, 8 recipe per page
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
 
 router.get("/", controllerListRecipe);
 
+// get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
+// search recipes by keyword
+router.get("/search", controllerSearchByTitle);
+// search recipes by ingredient
+router.get("/ingredients", controllerSearchByIngredients);
 
 router.post("/", validateAddRecipe, controllerAddRecipe);
 
 router.delete("/:recipeId", isValidId, controllerRemoveRecipe);
 
-router.put(
-  "/:recipeId",
-  isValidId,
-  validateRecipeUpdate,
-  controllerUpdateRecipe
-);
+router.put("/:recipeId", isValidId, validateRecipeUpdate, controllerUpdateRecipe);
 
-router.patch(
-  "/:recipeId/favorite",
-  isValidId,
-  validateRecipeFavoriteUpdate,
-  controllerUpdateStatusRecipe
-);
+router.patch("/:recipeId/favorite", isValidId, validateRecipeFavoriteUpdate, controllerUpdateStatusRecipe);
 
 module.exports = router;

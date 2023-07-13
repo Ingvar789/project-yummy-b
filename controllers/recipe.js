@@ -135,9 +135,7 @@ const controllerSearchByIngredients = async (req, res) => {
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(
-    controllerGetRecipesByCategory
-  ),
+  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
   controllerListRecipe: controlWrapper(controllerListRecipe),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
