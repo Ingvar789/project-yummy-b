@@ -2,7 +2,6 @@ const HttpError = require("../helpers/HttpError");
 const { Recipe } = require("../models/recipe");
 
 const controlWrapper = require("../decorators/controllWrapper");
-const { string } = require("joi");
 
 const controllerCategoryList = async (req, res) => {
   const categories = [
@@ -44,6 +43,29 @@ const controllerMainPage = async (req, res) => {
   res.json(latestRecipes);
 };
 
+const controllerGetRecipesByCategory = async (req, res) => {
+  let category = req.params.category;
+  category = category.charAt(0).toUpperCase() + category.slice(1);
+
+  const { page = 1, limit = 8 } = req.query;
+  const skip = (page - 1) * limit;
+
+  try {
+    const totalRecipes = await Recipe.countDocuments({ category });
+    const recipes = await Recipe.find({ category }).skip(skip).limit(limit);
+    const totalPages = Math.ceil(totalRecipes / limit);
+
+    res.json({
+      recipes,
+      currentPage: page,
+      totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 const controllerListRecipe = async (req, res) => {
   res.json(req.body);
 };
@@ -66,6 +88,7 @@ const controllerRemoveRecipe = async (req, res) => {
     message: "contact deleted",
   });
 };
+
 const controllerUpdateRecipe = async (req, res) => {
   res.json(req.body);
 };
@@ -74,25 +97,26 @@ const controllerUpdateStatusRecipe = async (req, res) => {
   res.json(req.body);
 };
 
-const controllerSearchByTitle = async(req,res) => {
-  const {title}  = req.body;
+const controllerSearchByTitle = async (req, res) => {
+  const { title } = req.body;
   const titleSearch = title.trim();
-  if (titleSearch === '') {
-      throw new HttpError(400, `Empty search fild`);
-    }
-    const result = {title: { $regex: title, $options: 'i' } }
-  const searchRecipe = await Recipe.find({title: { $regex: title, $options: 'i' } });
+  if (titleSearch === "") {
+    throw new HttpError(400, `Empty search fild`);
+  }
+  // const result = { title: { $regex: title, $options: "i" } };
+  const searchRecipe = await Recipe.find({
+    title: { $regex: title, $options: "i" },
+  });
 
   if (searchRecipe.length === 0) {
     throw HttpError(404, "recipe not found");
   }
   return res.json(searchRecipe);
-
-}
+};
 
 const controllerSearchByIngredients = async (req, res) => {
-  const {id}  = req.body;
-  console.log(req.body)
+  const { id } = req.body;
+  console.log(req.body);
   if (id === "") {
     return res.status(404).json({ message: "Not found ingredients" });
   }
@@ -110,6 +134,9 @@ const controllerSearchByIngredients = async (req, res) => {
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
+  controllerGetRecipesByCategory: controlWrapper(
+    controllerGetRecipesByCategory
+  ),
   controllerListRecipe: controlWrapper(controllerListRecipe),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),

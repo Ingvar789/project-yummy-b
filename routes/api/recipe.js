@@ -10,6 +10,7 @@ const {
 const {
   controllerCategoryList,
   controllerMainPage,
+  controllerGetRecipesByCategory,
   controllerListRecipe,
   controllerGetRecipeById,
   controllerAddRecipe,
@@ -31,6 +32,8 @@ router.get("/search", controllerSearchByTitle);
 router.get("/ingredients", controllerSearchByIngredients);
 
 router.get("/main-page", controllerMainPage);
+
+router.get("/:category", controllerGetRecipesByCategory);
 
 router.get("/", controllerListRecipe);
 
