@@ -27,7 +27,7 @@ const controllerCategoryList = async (req, res) => {
 };
 
 const controllerMainPage = async (req, res) => {
-  const categories = ["Breakfast", "Miscellaneous", "Chicken", "Dessert"];
+  const categories = ["Breakfast", "Miscellaneous", "Chicken", "Desserts"];
 
   const latestRecipes = {};
 
@@ -101,17 +101,19 @@ const controllerSearchByTitle = async (req, res) => {
   const { title } = req.body;
   const titleSearch = title.trim();
 
-  if (titleSearch === '') {
-      throw new HttpError(400, `Empty search fild`);
-    }
-
-    const searchRecipe = await Recipe.find({title: { $regex: title, $options: 'i' } });
+  if (titleSearch === "") {
+    throw new HttpError(400, `Empty search fild`);
+  }
+  const result = { title: { $regex: title, $options: "i" } };
+  const searchRecipe = await Recipe.find({
+    title: { $regex: title, $options: "i" },
+  });
 
   if (searchRecipe.length === 0) {
     throw HttpError(404, "recipe not found");
   }
   return res.json(searchRecipe);
-}
+};
 
 const controllerSearchByIngredients = async (req, res) => {
   const { id } = req.body;
@@ -133,9 +135,7 @@ const controllerSearchByIngredients = async (req, res) => {
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(
-    controllerGetRecipesByCategory
-  ),
+  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
   controllerListRecipe: controlWrapper(controllerListRecipe),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
