@@ -16,18 +16,51 @@ const updateFavoriteSchemaJoi = Joi.object({
 const joiSchemas = {
   recipeSchemaJoi,
   updateFavoriteSchemaJoi,
-};
+
 const recipeSchemaMongoose = new Schema(
   {
-    name: {
+    title: {
       type: String,
-      required: [true, "Set name for recipe"],
+      require: true,
+    },
+    category: {
+      type: String,
+      require: true,
+    },
+    area: {
+      type: String,
+    },
+    instructions: {
+      type: String,
+      require: true,
+    },
+    description: {
+      type: String,
+      require: true,
+    },
+    preview: {
+      type: String,
+      require: true,
+    },
+    time: {
+      type: String,
+      require: true,
+    },
+    youtube: {
+      type: String,
+    },
+    tags: {
+      type: Array,
+    },
+    ingredients: {
+      type: Array,
+      require: true,
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false }
 );
 
-const Recipe = model("recipe", recipeSchemaMongoose);
+const Recipe = model("recipes", recipeSchemaMongoose);
 
 recipeSchemaMongoose.post("save", handleMongooseError);
 

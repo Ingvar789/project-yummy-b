@@ -16,6 +16,8 @@ const {
   controllerRemoveRecipe,
   controllerUpdateRecipe,
   controllerUpdateStatusRecipe,
+  controllerSearchByTitle,
+  controllerSearchByIngredients,
 } = require("../../controllers/recipe");
 
 const router = express.Router();
@@ -23,6 +25,10 @@ const router = express.Router();
 // router.use(authentication);
 
 router.get("/category-list", controllerCategoryList);
+
+router.get("/search", controllerSearchByTitle);
+
+router.get("/ingredients", controllerSearchByIngredients);
 
 router.get("/main-page", controllerMainPage);
 
