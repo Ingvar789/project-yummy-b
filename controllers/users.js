@@ -63,8 +63,10 @@ const controllerRegister = async (req, res) => {
 
   res.status(201).json({
     user: {
+      name: newUser.name,
       email: newUser.email,
       subscription: newUser.subscription,
+      avatarURL:newUser.avatarURL,
     },
   });
 };
