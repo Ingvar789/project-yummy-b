@@ -1,6 +1,5 @@
 const HttpError = require("../helpers/HttpError");
 const { Recipe } = require("../models/recipe");
-
 const controlWrapper = require("../decorators/controllWrapper");
 
 const controllerCategoryList = async (req, res) => {
@@ -27,7 +26,7 @@ const controllerCategoryList = async (req, res) => {
 };
 
 const controllerMainPage = async (req, res) => {
-  const categories = ["Breakfast", "Miscellaneous", "Chicken", "Desserts"];
+  const categories = ["Breakfast", "Miscellaneous", "Chicken", "Dessert"];
 
   const latestRecipes = {};
 
@@ -66,10 +65,6 @@ const controllerGetRecipesByCategory = async (req, res) => {
   }
 };
 
-const controllerListRecipe = async (req, res) => {
-  res.json(req.body);
-};
-
 const controllerGetRecipeById = async (req, res) => {
   const { recipeId } = req.params;
   const recipe = await Recipe.findById(recipeId);
@@ -104,8 +99,7 @@ const controllerSearchByTitle = async (req, res) => {
   if (title === "") {
     throw new HttpError(400, `Empty search fild`);
   }
-
-  const searchRecipe = await Recipe.find({
+const searchRecipe = await Recipe.find({
     title: { $regex: title, $options: "i" },
   });
 
@@ -121,7 +115,6 @@ module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
   controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
-  controllerListRecipe: controlWrapper(controllerListRecipe),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
