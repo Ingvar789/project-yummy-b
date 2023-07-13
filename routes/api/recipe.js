@@ -10,6 +10,7 @@ const {
 const {
   controllerCategoryList,
   controllerMainPage,
+  controllerGetRecipesByCategory,
   controllerListRecipe,
   controllerGetRecipeById,
   controllerAddRecipe,
@@ -29,8 +30,13 @@ router.get("/category-list", controllerCategoryList);
 // recipes by categories for main page
 router.get("/main-page", controllerMainPage);
 
+
 // recipes by category, 8 recipe per page
 // router.get("/", controllerListRecipe);
+
+router.get("/category/:categoryName", controllerGetRecipesByCategory);
+
+router.get("/", controllerListRecipe);
 
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);

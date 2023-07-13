@@ -67,6 +67,7 @@ const controllerRegister = async (req, res) => {
       email: newUser.email,
       subscription: newUser.subscription,
       avatarURL:newUser.avatarURL,
+      verificationToken: newUser.verificationToken,
     },
   });
 };
@@ -235,7 +236,6 @@ const controllerUpdateUser = async (req, res) => {
     console.error(error);
     res.status(500);
   }
-
 };
 
 module.exports = {

@@ -19,6 +19,10 @@
     {
       "name": "Recipes",
       "description": "Recipes endpoints"
+    },
+    {
+      "name": "Ingredients",
+      "description": "Ingredients endpoints"
     }
   ],
   "paths": {
@@ -302,11 +306,120 @@
         }
       }
     },
-    "api/recipes/category-list": {
+    "/api/recipes/category-list": {
       "get": {
         "tags": ["Recipes"],
         "summary": "Return a list of categories",
         "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "A list of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/recipes/main-page": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Return a recipes by category for main page",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "A JSON array of recipes by categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipesMainResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/recipes/{id}": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Return a recipe by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Recipe's id",
+            "type": "string"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successfull operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/recipes/search": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Return a JSON array of recipes by query",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
             "description": "A JSON array of categories",
@@ -324,6 +437,82 @@
           },
           "401": {
             "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/recipes/ingredients": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Return a recipes by ingredient",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "IngredientId",
+            "required": true,
+            "description": "Ingredient's id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON array of recipes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/ingredients/list": {
+      "get": {
+        "tags": ["Ingredients"],
+        "summary": "Return a list of all ingredients",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "A JSON array of ingredients",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngredientsList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
             "content": {}
           },
           "500": {
@@ -411,23 +600,27 @@
       "CurrentUserResponse": {
         "type": "object",
         "properties": {
-          "token": {
-            "type": "string",
-            "description": "User's token",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YWFhM2Q4M2RjYTU5YzgxMjRkMTE4YiIsImlhdCI6MTY4ODkwNTMxNywiZXhwIjoxNjg4OTg4MTE3fQ.3E2nKL-nFuDwe9zCyLQBPc14DIcq8Yf9tejUXu7fhJg"
-          },
           "email": {
             "type": "string",
             "description": "User's email",
             "format": "email"
+          },
+          "subscription": {
+            "type": "boolean",
+            "description": "User's subscription"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "avatarURL": {
+            "name": "string",
+            "description": "User's avatar"
           }
         }
       },
       "CategoryList": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        },
+        "type": "string",
         "example": [
           "Beef",
           "Breakfast",
@@ -444,6 +637,148 @@
           "Vegan",
           "Vegetarian"
         ]
+      },
+      "IngredientsList": {
+        "type": "array",
+        "properties": {
+          "type": "array",
+          "description": "List of ingredients",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "ingredient's id"
+              },
+              "name": {
+                "type": "string",
+                "description": "ingredient's name"
+              },
+              "desc": {
+                "type": "string",
+                "description": "ingredient's description"
+              },
+              "img": {
+                "type": "string",
+                "description": "ingredient's image"
+              }
+            }
+          }
+        },
+        "example": {
+          "_id": "640c2dd963a319ea671e365c",
+          "name": "Salmon",
+          "desc": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae. Other fish in the same family include trout, char, grayling and whitefish. Salmon are native to tributaries of the North Atlantic (genus Salmo) and Pacific Ocean (genus Oncorhynchus). Many species of salmon have been introduced into non-native environments such as the Great Lakes of North America and Patagonia in South America. Salmon are intensively farmed in many parts of the world. Typically, salmon are anadromous: they hatch in fresh water, migrate to the ocean, then return to fresh water to reproduce. However, populations of several species are restricted to fresh water through their lives. Folklore has it that the fish return to the exact spot where they hatched to spawn. Tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon. Homing behavior has been shown to depend on olfactory memory. Salmon date back to the Neogene.",
+          "img": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
+        }
+      },
+      "RecipeSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id",
+            "example": "6462a8f74c3d0ddd28897fc6"
+          },
+          "title": {
+            "type": "string",
+            "description": "title",
+            "example": "New York cheesecake"
+          },
+          "category": {
+            "type": "string",
+            "description": "category",
+            "example": "Dessert"
+          },
+          "area": {
+            "type": "string",
+            "description": "area",
+            "example": "American"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "instructions",
+            "example": "Position an oven shelf in the middle of the oven. Preheat the oven to fan 160C/conventional 180C/gas 4. Line the base of a 23cm springform cake tin with parchment paper. For the crust, melt the butter in a medium pan. Stir in the biscuit crumbs and sugar so the mixture is evenly moistened. Press the mixture into the bottom of the pan and bake for 10 minutes. Cool on a wire rack while preparing the filling.\r\nFor the filling, increase the oven temperature to fan 200C/conventional 240C/gas 9. In a table top mixer fitted with the paddle attachment, beat the soft cheese at medium-low speed until creamy, about 2 minutes. With the mixer on low, gradually add the sugar, then the flour and a pinch of salt, scraping down the sides of the bowl and the paddle twice.\r\nSwap the paddle attachment for the whisk. Continue by adding the vanilla, lemon zest and juice. Whisk in the eggs and yolk, one at a time, scraping the bowl and whisk at least twice. Stir the 284ml carton of soured cream until smooth, then measure 200ml/7fl oz (just over 3⁄4 of the carton). Continue on low speed as you add the measured soured cream (reserve the rest). Whisk to blend, but don't over-beat. The batter should be smooth, light and somewhat airy.\r\nBrush the sides of the springform tin with melted butter and put on a baking sheet. Pour in the filling - if there are any lumps, sink them using a knife - the top should be as smooth as possible. Bake for 10 minutes. Reduce oven temperature to fan 90C/conventional 110C/gas 1⁄4 and bake for 25 minutes more. If you gently shake the tin, the filling should have a slight wobble. Turn off the oven and open the oven door for a cheesecake that's creamy in the centre, or leave it closed if you prefer a drier texture. Let cool in the oven for 2 hours. The cheesecake may get a slight crack on top as it cools.\r\nCombine the reserved soured cream with the 142ml carton, the sugar and lemon juice for the topping. Spread over the cheesecake right to the edges. Cover loosely with foil and refrigerate for at least 8 hours or overnight.\r\nRun a round-bladed knife around the sides of the tin to loosen any stuck edges. Unlock the side, slide the cheesecake off the bottom of the tin onto a plate, then slide the parchment paper out from underneath."
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "A classic dessert made with cream cheese and a graham cracker crust, creamy and indulgent."
+          },
+          "thumb": {
+            "type": "string",
+            "description": "thumb",
+            "example": "https://www.themealdb.com/images/media/meals/swttys1511385853.jpg"
+          },
+          "preview": {
+            "type": "string",
+            "description": "preview",
+            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560536/xdb5jf594uog1izlperm.jpg"
+          },
+          "time": {
+            "type": "string",
+            "description": "time",
+            "example": "195"
+          },
+          "favorites": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "time",
+              "example": "640cd5ac2d9fecf12e8897ee"
+            }
+          },
+          "youtube": {
+            "type": "string",
+            "description": "youtube",
+            "example": "https://www.youtube.com/watch?v=tspdJ6hxqnc"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "tags",
+              "example": ["Desert", "Dairy", "Pudding", "Cake", "Breakfast"]
+            }
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "ingredient",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "ingredient's id",
+                  "example": "640c2dd963a319ea671e372e"
+                },
+                "measure": {
+                  "type": "string",
+                  "description": "ingredient's measure",
+                  "example": "250g"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RecipesMainResponse": {
+        "type": "object",
+        "description": "Recipes by category for main page",
+        "properties": {
+          "category": {
+            "type": "array",
+            "description": "A JSON array of categories with recipes",
+            "items": {
+              "recipes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RecipeSchema"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "securitySchemes": {
