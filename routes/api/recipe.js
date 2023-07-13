@@ -9,6 +9,7 @@ const {
 
 const {
   controllerCategoryList,
+  controllerMainPage,
   controllerListRecipe,
   controllerGetRecipeById,
   controllerAddRecipe,
@@ -23,6 +24,8 @@ const router = express.Router();
 
 router.get("/category-list", controllerCategoryList);
 
+router.get("/main-page", controllerMainPage);
+
 router.get("/", controllerListRecipe);
 
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
@@ -31,8 +34,18 @@ router.post("/", validateAddRecipe, controllerAddRecipe);
 
 router.delete("/:recipeId", isValidId, controllerRemoveRecipe);
 
-router.put("/:recipeId", isValidId, validateRecipeUpdate, controllerUpdateRecipe);
+router.put(
+  "/:recipeId",
+  isValidId,
+  validateRecipeUpdate,
+  controllerUpdateRecipe
+);
 
-router.patch("/:recipeId/favorite", isValidId, validateRecipeFavoriteUpdate, controllerUpdateStatusRecipe);
+router.patch(
+  "/:recipeId/favorite",
+  isValidId,
+  validateRecipeFavoriteUpdate,
+  controllerUpdateStatusRecipe
+);
 
 module.exports = router;
