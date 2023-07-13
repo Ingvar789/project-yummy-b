@@ -1,14 +1,17 @@
-const {Schema, model} = require("mongoose");
-const {handleMongooseError} = require("../helpers");
+const { Schema, model } = require("mongoose");
+const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
 
 const recipeSchemaJoi = Joi.object({
-  name: Joi.string().required().messages({'any.required':`missing required name field`}),
+  name: Joi.string()
+    .required()
+    .messages({ "any.required": `missing required name field` }),
   favorite: Joi.boolean(),
-})
+});
 
 const updateFavoriteSchemaJoi = Joi.object({
   favorite: Joi.boolean().required(),
+<<<<<<< HEAD
 })
 const getCategoriesJoi = Joi.object({
   categories: Joi.array().items(
@@ -31,15 +34,58 @@ const joiSchemas = {
   recipeSchemaJoi,
   updateFavoriteSchemaJoi,
   getCategoriesJoi,
-}
-const recipeSchemaMongoose = new Schema({
-  name: {
-    type: String,
-    required: [true, 'Set name for recipe'],
-  }
-}, {versionKey: false, timestamps: true});
+=======
+});
 
-const Recipe = model("contact", recipeSchemaMongoose);
+const joiSchemas = {
+    recipeSchemaJoi,
+    updateFavoriteSchemaJoi,
+>>>>>>> f22e8da2131541e10281ceaaf87cd24c1486b89a
+}
+const recipeSchemaMongoose = new Schema(
+  {
+    title: {
+      type: String,
+      require: true,
+    },
+    category: {
+      type: String,
+      require: true,
+    },
+    area: {
+      type: String,
+    },
+    instructions: {
+      type: String,
+      require: true,
+    },
+    description: {
+      type: String,
+      require: true,
+    },
+    preview: {
+      type: String,
+      require: true,
+    },
+    time: {
+      type: String,
+      require: true,
+    },
+    youtube: {
+      type: String,
+    },
+    tags: {
+      type: Array,
+    },
+    ingredients: {
+      type: Array,
+      require: true,
+    },
+  },
+  { versionKey: false }
+);
+
+const Recipe = model("recipes", recipeSchemaMongoose);
 
 recipeSchemaMongoose.post("save", handleMongooseError);
 const categoriesMongooseShema = new Schema({
@@ -94,5 +140,9 @@ const FoodItem = model("foodCategory", categoriesMongooseShema);
 module.exports = {
   Recipe,
   joiSchemas,
+<<<<<<< HEAD
   FoodItem,
 }
+=======
+};
+>>>>>>> f22e8da2131541e10281ceaaf87cd24c1486b89a

@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 const {FoodItem} = require("../models/recipe")
 // const HttpError = require("../helpers/HttpError");
 // const { Recipe} = require("../models/recipe");
+=======
+const HttpError = require("../helpers/HttpError");
+const { Recipe } = require("../models/recipe");
+
+>>>>>>> f22e8da2131541e10281ceaaf87cd24c1486b89a
 const controlWrapper = require("../decorators/controllWrapper");
+const { string } = require("joi");
 
 const controllerCategoryList = async (req, res) => {
   const categories = [
@@ -21,9 +28,26 @@ const controllerCategoryList = async (req, res) => {
     "Vegetarian",
   ];
 
-  const sortedCategories = categories.sort(); 
+  const sortedCategories = categories.sort();
 
   res.json(sortedCategories);
+};
+
+const controllerMainPage = async (req, res) => {
+  const categories = ["Breakfast", "Miscellaneous", "Chicken", "Dessert"];
+
+  const latestRecipes = {};
+
+  const allRecipe = await Recipe.find();
+
+  categories.forEach((category) => {
+    const recipes = allRecipe
+      .filter((recipe) => recipe.category === category)
+      .slice(-4);
+    latestRecipes[category] = recipes;
+  });
+
+  res.json(latestRecipes);
 };
 
 const controllerListRecipe = async (req, res) => {
@@ -31,7 +55,12 @@ const controllerListRecipe = async (req, res) => {
 };
 
 const controllerGetRecipeById = async (req, res) => {
-  res.json(req.body);
+  const { recipeId } = req.params;
+  const recipe = await Recipe.findById(recipeId);
+  if (!recipe) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(recipe);
 };
 
 const controllerAddRecipe = async (req, res) => {
@@ -51,11 +80,45 @@ const controllerUpdateStatusRecipe = async (req, res) => {
   res.json(req.body);
 };
 
+<<<<<<< HEAD
 const kindOfRecipe  = async (req, res) => {
 //const categories = await FoodItem.findOne({categories})
     res.status(201).json({categories:categories});
 }
 
+=======
+const controllerSearchByTitle = async(req,res) => {
+  const {title}  = req.body;
+  const titleSearch = title.trim();
+  if (titleSearch === '') {
+      throw new HttpError(400, `Empty search fild`);
+    }
+    const result = {title: { $regex: title, $options: 'i' } }
+    const searchRecipe = await Recipe.find({title: { $regex: title, $options: 'i' } });
+
+  if (searchRecipe.length === 0) {
+    throw HttpError(404, "recipe not found");
+  }
+  return res.json(searchRecipe);
+}
+
+const controllerSearchByIngredients = async (req, res) => {
+  const {id}  = req.body;
+  console.log(req.body)
+  if (id === "") {
+    return res.status(404).json({ message: "Not found ingredients" });
+  }
+  const result = await Recipe.find({
+    ingredients: {
+      $elemMatch: {
+        id: id,
+      },
+    },
+  });
+
+  return res.json(result);
+};
+>>>>>>> f22e8da2131541e10281ceaaf87cd24c1486b89a
 
 module.exports = {
 <<<<<<< HEAD
@@ -69,11 +132,14 @@ module.exports = {
 }
 =======
   controllerCategoryList: controlWrapper(controllerCategoryList),
+  controllerMainPage: controlWrapper(controllerMainPage),
   controllerListRecipe: controlWrapper(controllerListRecipe),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
   controllerUpdateRecipe: controlWrapper(controllerUpdateRecipe),
   controllerUpdateStatusRecipe: controlWrapper(controllerUpdateStatusRecipe),
+  controllerSearchByTitle: controlWrapper(controllerSearchByTitle),
+  controllerSearchByIngredients: controlWrapper(controllerSearchByIngredients),
 };
 >>>>>>> c810f35bf215a608024512d7983721204920e86e

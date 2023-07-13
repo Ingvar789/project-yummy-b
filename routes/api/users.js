@@ -27,7 +27,7 @@ router.post("/logout", authentication, controllerLogout);
 router.get("/current", authentication, controllerGetCurrent);
 // subscription
 router.patch("/subscribe", authentication, validate(joiAuthSchemas.userSchemaSubscriptionJoi), controllerUpdateSubscription);
-// avatar
+// manage data-user
 router.patch("/update-user", authentication, upload.single("avatar"), controllerUpdateUser);
 // email verify
 router.get("/verify/:verificationToken", controllerVerifyEmail);

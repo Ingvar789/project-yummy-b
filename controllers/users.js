@@ -56,7 +56,7 @@ const controllerRegister = async (req, res) => {
     to: email,
     subject: "Verify Email",
     html: `<h1>Welcome to <span style="font-size:40px; font-style: italic;">"So Yummy"</span> app!</h1>
-     <p>Follow the link to complete the registration</p><a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}"> Click to verify email </a>`,
+     <p>Follow the link to complete the registration</p><a target="_blank" href="https://basesnel.github.io/project-yummy-f/signin?verify=${verificationToken}"> Click to verify email </a>`,
   };
 
   await sendEmail(verifyEmail);
@@ -146,12 +146,16 @@ const controllerLogin = async (req, res) => {
   const token = sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.json({
-    token,
-    verify: true,
+  const verifiedUser = await User.findById(user._id);
+
+  res.status(200).json({
+    token: verifiedUser.token,
+    verify: verifiedUser.verify,
     user: {
-      email: user.email,
-      subscription: user.subscription,
+      email: verifiedUser.email,
+      subscription: verifiedUser.subscription,
+      name: verifiedUser.name,
+      avatarURL: verifiedUser.avatarURL,
     },
   });
 };
