@@ -14,9 +14,9 @@ const updateFavoriteSchemaJoi = Joi.object({
 });
 
 const joiSchemas = {
-  recipeSchemaJoi,
-  updateFavoriteSchemaJoi,
-
+    recipeSchemaJoi,
+    updateFavoriteSchemaJoi,
+}
 const recipeSchemaMongoose = new Schema(
   {
     title: {
