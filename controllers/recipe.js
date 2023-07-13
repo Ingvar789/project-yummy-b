@@ -26,7 +26,7 @@ const controllerCategoryList = async (req, res) => {
 };
 
 const controllerMainPage = async (req, res) => {
-  const categories = ["Breakfast", "Miscellaneous", "Chicken", "Desserts"];
+  const categories = ["Breakfast", "Miscellaneous", "Chicken", "Dessert"];
 
   const latestRecipes = {};
 
@@ -99,7 +99,6 @@ const controllerSearchByTitle = async (req, res) => {
   if (titleSearch === "") {
     throw new HttpError(400, `Empty search fild`);
   }
-  const result = { title: { $regex: title, $options: "i" } };
   const searchRecipe = await Recipe.find({
     title: { $regex: title, $options: "i" },
   });
