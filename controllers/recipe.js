@@ -1,6 +1,5 @@
 const HttpError = require("../helpers/HttpError");
 const { Recipe } = require("../models/recipe");
-
 const controlWrapper = require("../decorators/controllWrapper");
 
 const controllerCategoryList = async (req, res) => {
@@ -66,10 +65,6 @@ const controllerGetRecipesByCategory = async (req, res) => {
   }
 };
 
-const controllerListRecipe = async (req, res) => {
-  res.json(req.body);
-};
-
 const controllerGetRecipeById = async (req, res) => {
   const { recipeId } = req.params;
   const recipe = await Recipe.findById(recipeId);
@@ -133,10 +128,7 @@ const controllerSearchByIngredients = async (req, res) => {
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(
-    controllerGetRecipesByCategory
-  ),
-  controllerListRecipe: controlWrapper(controllerListRecipe),
+  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),

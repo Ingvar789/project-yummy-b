@@ -11,7 +11,6 @@ const {
   controllerCategoryList,
   controllerMainPage,
   controllerGetRecipesByCategory,
-  controllerListRecipe,
   controllerGetRecipeById,
   controllerAddRecipe,
   controllerRemoveRecipe,
@@ -31,9 +30,6 @@ router.get("/category-list", controllerCategoryList);
 router.get("/main-page", controllerMainPage);
 // recipes by category, 8 recipe per page
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
-
-router.get("/", controllerListRecipe);
-
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
 // search recipes by keyword
