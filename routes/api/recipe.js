@@ -17,7 +17,6 @@ const {
   controllerUpdateRecipe,
   controllerUpdateStatusRecipe,
   controllerSearchByTitle,
-  controllerSearchByIngredients,
 } = require("../../controllers/recipe");
 
 const router = express.Router();
@@ -30,12 +29,17 @@ router.get("/category-list", controllerCategoryList);
 router.get("/main-page", controllerMainPage);
 // recipes by category, 8 recipe per page
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
+
+router.get("/", controllerListRecipe);
+
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
+
 // search recipes by keyword
 router.get("/search", controllerSearchByTitle);
-// search recipes by ingredient
-router.get("/ingredients", controllerSearchByIngredients);
+// get one recipe by id
+router.get("/:recipeId", isValidId, controllerGetRecipeById);
+
 
 router.post("/", validateAddRecipe, controllerAddRecipe);
 
