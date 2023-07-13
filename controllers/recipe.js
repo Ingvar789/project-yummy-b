@@ -100,13 +100,12 @@ const controllerUpdateStatusRecipe = async (req, res) => {
 const controllerSearchByTitle = async (req, res) => {
   const { title } = req.body;
   const titleSearch = title.trim();
-  if (titleSearch === "") {
-    throw new HttpError(400, `Empty search fild`);
-  }
-  // const result = { title: { $regex: title, $options: "i" } };
-  const searchRecipe = await Recipe.find({
-    title: { $regex: title, $options: "i" },
-  });
+
+  if (titleSearch === '') {
+      throw new HttpError(400, `Empty search fild`);
+    }
+    const result = {title: { $regex: title, $options: 'i' } }
+    const searchRecipe = await Recipe.find({title: { $regex: title, $options: 'i' } });
 
   if (searchRecipe.length === 0) {
     throw HttpError(404, "recipe not found");
