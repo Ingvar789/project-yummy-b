@@ -98,13 +98,13 @@ const controllerUpdateStatusRecipe = async (req, res) => {
 };
 
 const controllerSearchByTitle = async (req, res) => {
-  const { title } = req.body;
-  const titleSearch = title.trim();
+  const { title } = req.query;
 
-  if (titleSearch === "") {
+
+  if (title === "") {
     throw new HttpError(400, `Empty search fild`);
   }
-  const result = { title: { $regex: title, $options: "i" } };
+
   const searchRecipe = await Recipe.find({
     title: { $regex: title, $options: "i" },
   });
@@ -115,22 +115,7 @@ const controllerSearchByTitle = async (req, res) => {
   return res.json(searchRecipe);
 };
 
-const controllerSearchByIngredients = async (req, res) => {
-  const { id } = req.body;
-  console.log(req.body);
-  if (id === "") {
-    return res.status(404).json({ message: "Not found ingredients" });
-  }
-  const result = await Recipe.find({
-    ingredients: {
-      $elemMatch: {
-        id: id,
-      },
-    },
-  });
 
-  return res.json(result);
-};
 
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
@@ -143,5 +128,5 @@ module.exports = {
   controllerUpdateRecipe: controlWrapper(controllerUpdateRecipe),
   controllerUpdateStatusRecipe: controlWrapper(controllerUpdateStatusRecipe),
   controllerSearchByTitle: controlWrapper(controllerSearchByTitle),
-  controllerSearchByIngredients: controlWrapper(controllerSearchByIngredients),
+
 };
