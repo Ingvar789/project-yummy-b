@@ -11,7 +11,6 @@ const recipeSchemaJoi = Joi.object({
 
 const updateFavoriteSchemaJoi = Joi.object({
   favorite: Joi.boolean().required(),
-<<<<<<< HEAD
 })
 const getCategoriesJoi = Joi.object({
   categories: Joi.array().items(
@@ -34,14 +33,8 @@ const joiSchemas = {
   recipeSchemaJoi,
   updateFavoriteSchemaJoi,
   getCategoriesJoi,
-=======
-});
+};
 
-const joiSchemas = {
-    recipeSchemaJoi,
-    updateFavoriteSchemaJoi,
->>>>>>> f22e8da2131541e10281ceaaf87cd24c1486b89a
-}
 const recipeSchemaMongoose = new Schema(
   {
     title: {
@@ -140,9 +133,7 @@ const FoodItem = model("foodCategory", categoriesMongooseShema);
 module.exports = {
   Recipe,
   joiSchemas,
-<<<<<<< HEAD
+
   FoodItem,
 }
-=======
-};
->>>>>>> f22e8da2131541e10281ceaaf87cd24c1486b89a
+

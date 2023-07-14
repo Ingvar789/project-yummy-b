@@ -63,8 +63,11 @@ const controllerRegister = async (req, res) => {
 
   res.status(201).json({
     user: {
+      name: newUser.name,
       email: newUser.email,
       subscription: newUser.subscription,
+      avatarURL: newUser.avatarURL,
+      verificationToken: newUser.verificationToken,
     },
   });
 };
@@ -96,6 +99,8 @@ const controllerVerifyEmail = async (req, res) => {
     token: verifiedUser.token,
     verify: verifiedUser.verify,
     user: {
+      name: verifiedUser.name,
+      avatarURL: verifiedUser.avatarURL,
       email: verifiedUser.email,
       subscription: verifiedUser.subscription,
     },
@@ -167,8 +172,9 @@ const controllerLogout = async (req, res) => {
 };
 
 const controllerGetCurrent = async (req, res) => {
-  const { email, subscription, name, avatarURL } = req.user;
+  const { email, subscription, name, avatarURL, token } = req.user;
   res.json({
+    token,
     email,
     subscription,
     name,
@@ -233,7 +239,6 @@ const controllerUpdateUser = async (req, res) => {
     console.error(error);
     res.status(500);
   }
-
 };
 
 module.exports = {
