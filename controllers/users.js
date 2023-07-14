@@ -172,8 +172,9 @@ const controllerLogout = async (req, res) => {
 };
 
 const controllerGetCurrent = async (req, res) => {
-  const { email, subscription, name, avatarURL } = req.user;
+  const { email, subscription, name, avatarURL, token } = req.user;
   res.json({
+    token,
     email,
     subscription,
     name,
