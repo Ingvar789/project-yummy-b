@@ -12,6 +12,7 @@ const {
   controllerUpdateUser,
   controllerVerifyEmail,
   controllerResendVerifyEmail,
+  controllerVerify
 } = require("../../controllers/users");
 
 
@@ -30,7 +31,7 @@ router.patch("/subscribe", authentication, validate(joiAuthSchemas.userSchemaSub
 // manage data-user
 router.patch("/update-user", authentication, upload.single("avatar"), controllerUpdateUser);
 // email verify
-router.get("/verify/:verificationToken", controllerVerifyEmail);
+router.get("/verify/:verificationToken", controllerVerifyEmail, controllerVerify);
 // resend email verification
 router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
 

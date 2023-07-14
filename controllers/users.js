@@ -106,6 +106,9 @@ const controllerVerifyEmail = async (req, res) => {
     },
   });
 };
+const controllerVerifyPage = async(req, res, next) => {
+  res.render('index')
+}
 
 const controllerResendVerifyEmail = async (req, res) => {
   const { email } = req.body;
@@ -250,4 +253,5 @@ module.exports = {
   controllerUpdateUser: controlWrapper(controllerUpdateUser),
   controllerVerifyEmail: controlWrapper(controllerVerifyEmail),
   controllerResendVerifyEmail: controlWrapper(controllerResendVerifyEmail),
+  controllerVerify: controlWrapper(controllerVerifyPage),
 };
