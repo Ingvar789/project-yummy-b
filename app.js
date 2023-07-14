@@ -13,7 +13,9 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
-app.use('/users/verify/:verificationToken', express.static('entree'));
+app.use('/users/verify/:verificationToken', express.static('entree'), (req, res)=>{
+res.render ('index')
+});
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/users", authRouter);
