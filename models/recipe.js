@@ -17,7 +17,6 @@ const joiSchemas = {
   recipeSchemaJoi,
   updateFavoriteSchemaJoi,
 };
-
 const recipeSchemaMongoose = new Schema(
   {
     title: {
@@ -57,11 +56,15 @@ const recipeSchemaMongoose = new Schema(
       type: Array,
       require: true,
     },
+
+    favorites: {
+      type: Array,
+      default: null,
+    },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "users",
+      ref: "user",
     },
-    
   },
   { versionKey: false }
 );

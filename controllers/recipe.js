@@ -79,6 +79,10 @@ const controllerGetRecipeById = async (req, res) => {
   res.json(recipe);
 };
 
+const controllerGetPopularRecipes = async (req, res) => {
+
+}
+  
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
 

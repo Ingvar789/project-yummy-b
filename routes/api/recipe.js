@@ -16,6 +16,7 @@ const {
   controllerAddRecipe,
   controllerRemoveRecipe,
   controllerUpdateRecipe,
+  controllerGetPopularRecipes,
   controllerUpdateStatusRecipe,
   controllerSearchByTitle,
 } = require("../../controllers/recipe");
@@ -37,6 +38,8 @@ router.get("/search", controllerSearchByTitle);
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
 
+// popular recipes
+router.get("/popular-recipe", controllerGetPopularRecipes);
 
 router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
 
