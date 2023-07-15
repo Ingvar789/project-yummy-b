@@ -43,16 +43,15 @@ const userEmailVerificationJoi = Joi.object({
     .messages({ "any.required": `missing required email field` }),
 });
 const userManageJoi = Joi.object({
-    name: Joi.string(),
-    avatarURL: Joi.string()
-
-})
+  name: Joi.string(),
+  avatarURL: Joi.string(),
+});
 const joiAuthSchemas = {
   userSchemaRegisterJoi,
   userSchemaLoginJoi,
   userSchemaSubscriptionJoi,
   userEmailVerificationJoi,
-  userManageJoi
+  userManageJoi,
 };
 
 const userSchemaMongoose = new Schema(
@@ -87,6 +86,12 @@ const userSchemaMongoose = new Schema(
       type: String,
       required: [true, "Verify token is required"],
     },
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Recipe",
+      },
+    ],
   },
   { versionKey: false, timestamps: true }
 );

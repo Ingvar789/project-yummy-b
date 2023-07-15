@@ -1,6 +1,7 @@
 const express = require("express");
-// const authentication = require("../../middlewares/authentication");
+const authentication = require("../../middlewares/authentication");
 const isValidId = require("../../middlewares/isValidId");
+const upload = require("../../middlewares/upload");
 const {
   validateAddRecipe,
   validateRecipeUpdate,
@@ -22,7 +23,7 @@ const {
 
 const router = express.Router();
 
-// router.use(authentication);
+router.use(authentication);
 
 // get categories
 router.get("/category-list", controllerCategoryList);
@@ -40,9 +41,9 @@ router.get("/:recipeId", isValidId, controllerGetRecipeById);
 // popular recipes
 router.get("/popular-recipe", controllerGetPopularRecipes);
 
-router.post("/", validateAddRecipe, controllerAddRecipe);
+router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
 
-router.delete("/:recipeId", isValidId, controllerRemoveRecipe);
+router.delete("/own-recipes/:recipeId", isValidId, controllerRemoveRecipe);
 
 router.put("/:recipeId", isValidId, validateRecipeUpdate, controllerUpdateRecipe);
 
