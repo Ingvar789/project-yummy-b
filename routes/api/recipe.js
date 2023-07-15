@@ -32,12 +32,12 @@ router.get("/main-page", controllerMainPage);
 // recipes by category, 8 recipe per page
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
 // get one recipe by id
-router.get("/:recipeId", isValidId, controllerGetRecipeById);
+router.get("/recipe/:recipeId", isValidId, controllerGetRecipeById);
 // search recipes by keyword
 router.get("/search", controllerSearchByTitle);
 
 // popular recipes
-// router.get("/popular-recipe", controllerGetPopularRecipes);
+router.get("/popular-recipe", controllerGetPopularRecipes);
 
 router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
 
