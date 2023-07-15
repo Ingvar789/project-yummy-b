@@ -56,6 +56,7 @@ const recipeSchemaMongoose = new Schema(
       type: Array,
       require: true,
     },
+
     favorites: {
       type: Array,
       default: null,
