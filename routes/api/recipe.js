@@ -35,18 +35,19 @@ router.get("/category/:categoryName", controllerGetRecipesByCategory);
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
 // search recipes by keyword
 router.get("/search", controllerSearchByTitle);
-// get one recipe by id
-router.get("/:recipeId", isValidId, controllerGetRecipeById);
 
 // popular recipes
-router.get("/popular-recipe", controllerGetPopularRecipes);
+// router.get("/popular-recipe", controllerGetPopularRecipes);
 
 router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
 
 router.delete("/own-recipes/:recipeId", isValidId, controllerRemoveRecipe);
 
-router.put("/:recipeId", isValidId, validateRecipeUpdate, controllerUpdateRecipe);
-
-router.patch("/:recipeId/favorite", isValidId, validateRecipeFavoriteUpdate, controllerUpdateStatusRecipe);
+router.put(
+  "/:recipeId",
+  isValidId,
+  validateRecipeUpdate,
+  controllerUpdateRecipe
+);
 
 module.exports = router;

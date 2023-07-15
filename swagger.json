@@ -25,6 +25,10 @@
       "description": "Ingredients endpoints"
     },
     {
+      "name": "Own recipes",
+      "description": "Own recipes endpoints"
+    },
+    {
       "name": "Favorites",
       "description": "Favorites endpoints"
     }
@@ -342,6 +346,84 @@
         }
       }
     },
+
+    "/api/recipes/category/{categoryName}": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Return a list of recipes sorted by categories",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Category",
+            "type": "string",
+            "enum": [
+              "Beef",
+              "Breakfast",
+              "Chicken",
+              "Dessert",
+              "Goat",
+              "Lamb",
+              "Miscellaneous",
+              "Pasta",
+              "Pork",
+              "Seafood",
+              "Side",
+              "Starter",
+              "Vegan",
+              "Vegetarian"
+            ],
+            "required": true,
+            "description": "Name of category"
+          },
+          {
+            "in": "query",
+            "name": "skip",
+            "type": "integer",
+            "description": "The number of items to skip before starting to collect the result set"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "default": 8,
+            "description": "The numbers of items to return"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "A list of recipes sorted by categories",
+            "content": {
+              "application/json": {
+                "type": "array",
+                "properties": {
+                  "items": {
+                    "type": "object",
+                    "description": "Recipes in selected category",
+                    "schema": {
+                      "$ref": "#/components/schemas/RecipeSchema"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
     "/api/recipes/main-page": {
       "get": {
         "tags": ["Recipes"],
@@ -421,16 +503,29 @@
     "/api/recipes/search": {
       "get": {
         "tags": ["Recipes"],
-        "summary": "Return a JSON array of recipes by query",
-        "parameters": [],
+        "summary": "Search recipes by title",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "search query in the title "
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "A JSON array of categories",
+            "description": "A JSON array of recipes",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CategoryList"
+                "type": "array",
+                "description": "Array of recipes",
+                "items": {
+                  "type": "object",
+                  "schema": {
+                    "$ref": "#/components/schemas/RecipeSchema"
+                  }
                 }
               }
             }
@@ -450,27 +545,21 @@
         }
       }
     },
-    "/api/recipes/ingredients": {
-      "get": {
-        "tags": ["Recipes"],
-        "summary": "Return a recipes by ingredient",
+    "/api/own-recipes": {
+      "post": {
+        "tags": ["Own recipes"],
+        "summary": "Return a recipe created by user",
+        "parameters": [],
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "IngredientId",
-            "required": true,
-            "description": "Ingredient's id",
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
-            "description": "A JSON array of recipes",
+            "description": "Successfull operation",
             "content": {
               "application/json": {
+                "type": "object",
+                "description": "Add recipe created by user",
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryList"
+                  "$ref": "#/components/schemas/RecipeSchema"
                 }
               }
             }
@@ -481,6 +570,48 @@
           },
           "401": {
             "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/own-recipes/{recipeId}": {
+      "delete": {
+        "tags": ["Own recipes"],
+        "summary": "Delete an user's own recipe",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "description": "Own recipe's id",
+            "type": "string"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successfull operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found.",
             "content": {}
           },
           "500": {
@@ -503,6 +634,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IngredientsList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/ingredients/search": {
+      "get": {
+        "tags": ["Ingredients"],
+        "summary": "Search for recipes by ingredient",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ingredient",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of ingredient to search"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "A JSON array of recipes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "schema": {
+                        "$ref": "#/components/schemas/RecipeSchema"
+                      }
+                    }
+                  }
                 }
               }
             }
