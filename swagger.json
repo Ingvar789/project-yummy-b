@@ -23,6 +23,10 @@
     {
       "name": "Ingredients",
       "description": "Ingredients endpoints"
+    },
+    {
+      "name": "Favorites",
+      "description": "Favorites endpoints"
     }
   ],
   "paths": {
@@ -521,6 +525,120 @@
           }
         }
       }
+    },
+    "/api/favorites/": {
+      "get": {
+        "tags": ["Favorites"],
+        "summary": "Return an array of the current user's favorite recipes (id)",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "An array of recipes id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavoritesList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/favorites/{recipeId}": {
+      "patch": {
+        "tags": ["Favorites"],
+        "summary": "Add recipe to the current user's favorites",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "description": "Recipe's id",
+            "type": "string"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Recipe added to favorites successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "409": {
+            "description": "Already added",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Favorites"],
+        "summary": "Delete recipe from the current user's favorites",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "description": "Recipe's id",
+            "type": "string"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Recipe deleted from favorites successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
     }
   },
   "components": {
@@ -779,6 +897,22 @@
             }
           }
         }
+      },
+      "FavoritesList": {
+        "type": "array",
+        "properties": {
+          "type": "array",
+          "description": "List of favorites recipes id",
+          "items": {
+            "type": "string",
+            "description": "Recipe's id"
+          }
+        },
+        "example": [
+          "6462a8f74c3d0ddd28897fc0",
+          "6462a8f74c3d0ddd28897fbf",
+          "6462a8f74c3d0ddd28897fc1"
+        ]
       }
     },
     "securitySchemes": {
