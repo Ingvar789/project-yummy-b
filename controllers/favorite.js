@@ -7,8 +7,7 @@ const controllerGetFavorites = async (req, res) => {
   const { id } = req.user;
 
   const user = await User.findById(id);
-  const FavoriteRecipes = await Recipe.findById(user.favorites[0]);
-  console.log(FavoriteRecipes);
+  
   res.status(200).json({ favorites: user.favorites });
 };
 
@@ -30,7 +29,7 @@ const controllerAddToFavorites = async (req, res) => {
 
   const isFavorite = user.favorites.includes(recipeId);
   if (isFavorite) {
-    throw HttpError(400, "Recipe is already added to favorites");
+    throw HttpError(409, "Recipe is already added to favorites");
   }
 
   await User.findByIdAndUpdate(
@@ -39,11 +38,9 @@ const controllerAddToFavorites = async (req, res) => {
     { new: true }
   );
 
-  await Recipe.findByIdAndUpdate(
-    recipeId,
-    { $push: { favorites: id } },
-    { new: true }
-  );
+  await Recipe.findByIdAndUpdate(recipeId, {
+    favoritesCounter: (recipe.favoritesCounter += 1),
+  });
 
   res.status(201).json({
     message: `Recipe id=${recipeId} added to favorites successfully`,
@@ -72,13 +69,11 @@ const controllerDeleteFromFavorites = async (req, res) => {
     { new: true }
   );
 
-  await Recipe.findByIdAndUpdate(
-    recipeId,
-    { $pull: { favorites: id } },
-    { new: true }
-  );
+  await Recipe.findByIdAndUpdate(recipeId, {
+    favoritesCounter: (recipe.favoritesCounter -= 1),
+  });
 
-  res.status(201).json({
+  res.status(200).json({
     message: `Recipe id=${recipeId} deleted from favorites successfully`,
   });
 };
