@@ -56,7 +56,7 @@ const controllerRegister = async (req, res) => {
     to: email,
     subject: "Verify Email",
     html: `<h1>Welcome to <span style="font-size:40px; font-style: italic;">"So Yummy"</span> app!</h1>
-     <p>Follow the link to complete the registration</p><a target="_blank" href="https://basesnel.github.io/project-yummy-f/signin?verify=${verificationToken}"> Click to verify email </a>`,
+     <p>Follow the link to complete the registration</p><a target="_blank" href="http://localhost:3000/signin?verify=${verificationToken}"> Click to verify email </a>`,
   };
 
   await sendEmail(verifyEmail);

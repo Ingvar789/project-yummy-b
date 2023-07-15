@@ -74,6 +74,9 @@ const controllerGetRecipeById = async (req, res) => {
   res.json(recipe);
 };
 
+const controllerGetPopularRecipes = async (req, res) => {
+
+}
 const controllerAddRecipe = async (req, res) => {
   res.status(201).json(req.body);
 };
