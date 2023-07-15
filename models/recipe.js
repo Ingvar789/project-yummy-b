@@ -56,7 +56,6 @@ const recipeSchemaMongoose = new Schema(
       type: Array,
       require: true,
     },
-    favoriteRoute
     favoritesCounter: {
       type: Number,
       default: 0,

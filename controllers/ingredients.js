@@ -10,23 +10,25 @@ const controllerIngredientsList = async (req, res) => {
 
 const controllerSearchByIngredients = async (req, res) => {
   const { ingredient } = req.query;
-  
-  const ingredientSearch = await Ingredient.findOne({name: { $regex: ingredient, $options: 'i' } });
+
+  const ingredientSearch = await Ingredient.findOne({
+    name: { $regex: ingredient, $options: "i" },
+  });
   if (!ingredientSearch) {
     return res.status(404).json({ message: "Not found ingredients" });
   }
 
-  const id = ingredientSearch._id.toString()
+  const id = ingredientSearch._id.toString();
 
-const result = await Recipe.find({
-  ingredients: {
-    $elemMatch: {
-      id: id,
+  const result = await Recipe.find({
+    ingredients: {
+      $elemMatch: {
+        id: id,
+      },
     },
-  },
-});
+  });
 
-res.json(result);
+  res.json(result);
 };
 
 module.exports = {
