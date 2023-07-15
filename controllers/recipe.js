@@ -1,7 +1,11 @@
 const HttpError = require("../helpers/HttpError");
 const { Recipe } = require("../models/recipe");
-
 const controlWrapper = require("../decorators/controllWrapper");
+const { image } = require("../helpers/cloudinary");
+const { cloudinary } = require("../helpers");
+const Jimp = require("jimp");
+const fs = require("fs").promises;
+
 
 const controllerCategoryList = async (req, res) => {
   const categories = [
@@ -66,10 +70,6 @@ const controllerGetRecipesByCategory = async (req, res) => {
   }
 };
 
-const controllerListRecipe = async (req, res) => {
-  res.json(req.body);
-};
-
 const controllerGetRecipeById = async (req, res) => {
   const { recipeId } = req.params;
   const recipe = await Recipe.findById(recipeId);
@@ -79,14 +79,50 @@ const controllerGetRecipeById = async (req, res) => {
   res.json(recipe);
 };
 
+const controllerGetPopularRecipes = async (req, res) => {
+
+}
+  
 const controllerAddRecipe = async (req, res) => {
-  res.status(201).json(req.body);
+  const { _id: owner } = req.user;
+
+let preview;
+
+if (req.file) {
+  const { path: oldPath } = req.file;
+  await Jimp.read(oldPath)
+    .then((image) => {
+      return image.resize(250, 250).write(oldPath);
+    })
+    .catch((e) => {
+      throw HttpError(400, "Bad request");
+    });
+
+  const fileData = await cloudinary.uploader.upload(oldPath, {
+    folder: "images",
+  });
+  await fs.unlink(oldPath);
+
+  preview = fileData.url;
+}
+
+else {
+  preview = "https://res.cloudinary.com/dvmiapyqk/image/upload/v1688894039/1_jyhhh3.png";
+}
+  
+console.log(preview);
+  const newRecipe = await Recipe.create({ ...req.body, preview, owner });
+  res.status(201).json(newRecipe);
 };
 
 const controllerRemoveRecipe = async (req, res) => {
-  res.json({
-    message: "contact deleted",
-  });
+  const { recipeId } = req.params;
+
+  const deleteRecipe = await Recipe.findOneAndRemove({ _id: recipeId } );
+  if (!deleteRecipe) {
+    throw new HttpError(404, `Recipe with id ${id} not found`);
+  }
+  return res.status(200).json({ message: "Recipe has deleted" });
 };
 
 const controllerUpdateRecipe = async (req, res) => {
@@ -98,50 +134,33 @@ const controllerUpdateStatusRecipe = async (req, res) => {
 };
 
 const controllerSearchByTitle = async (req, res) => {
-  const { title } = req.body;
-  const titleSearch = title.trim();
+  const { title } = req.query;
 
-  if (titleSearch === '') {
-      throw new HttpError(400, `Empty search fild`);
-    }
-    const result = {title: { $regex: title, $options: 'i' } }
-    const searchRecipe = await Recipe.find({title: { $regex: title, $options: 'i' } });
+
+  if (title === "") {
+    throw new HttpError(400, `Empty search fild`);
+  }
+const searchRecipe = await Recipe.find({
+    title: { $regex: title, $options: "i" },
+  });
 
   if (searchRecipe.length === 0) {
     throw HttpError(404, "recipe not found");
   }
   return res.json(searchRecipe);
-}
-
-const controllerSearchByIngredients = async (req, res) => {
-  const { id } = req.body;
-  console.log(req.body);
-  if (id === "") {
-    return res.status(404).json({ message: "Not found ingredients" });
-  }
-  const result = await Recipe.find({
-    ingredients: {
-      $elemMatch: {
-        id: id,
-      },
-    },
-  });
-
-  return res.json(result);
 };
+
+
 
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(
-    controllerGetRecipesByCategory
-  ),
-  controllerListRecipe: controlWrapper(controllerListRecipe),
+  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
   controllerUpdateRecipe: controlWrapper(controllerUpdateRecipe),
   controllerUpdateStatusRecipe: controlWrapper(controllerUpdateStatusRecipe),
   controllerSearchByTitle: controlWrapper(controllerSearchByTitle),
-  controllerSearchByIngredients: controlWrapper(controllerSearchByIngredients),
+
 };

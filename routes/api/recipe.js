@@ -1,6 +1,7 @@
 const express = require("express");
-// const authentication = require("../../middlewares/authentication");
+const authentication = require("../../middlewares/authentication");
 const isValidId = require("../../middlewares/isValidId");
+const upload = require("../../middlewares/upload");
 const {
   validateAddRecipe,
   validateRecipeUpdate,
@@ -11,50 +12,41 @@ const {
   controllerCategoryList,
   controllerMainPage,
   controllerGetRecipesByCategory,
-  controllerListRecipe,
   controllerGetRecipeById,
   controllerAddRecipe,
   controllerRemoveRecipe,
   controllerUpdateRecipe,
+  controllerGetPopularRecipes,
   controllerUpdateStatusRecipe,
   controllerSearchByTitle,
-  controllerSearchByIngredients,
 } = require("../../controllers/recipe");
 
 const router = express.Router();
 
-// router.use(authentication);
+router.use(authentication);
 
+// get categories
 router.get("/category-list", controllerCategoryList);
-
-router.get("/search", controllerSearchByTitle);
-
-router.get("/ingredients", controllerSearchByIngredients);
-
+// recipes by categories for main page
 router.get("/main-page", controllerMainPage);
-
+// recipes by category, 8 recipe per page
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
-
-router.get("/", controllerListRecipe);
-
+// get one recipe by id
+router.get("/:recipeId", isValidId, controllerGetRecipeById);
+// search recipes by keyword
+router.get("/search", controllerSearchByTitle);
+// get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
 
-router.post("/", validateAddRecipe, controllerAddRecipe);
+// popular recipes
+router.get("/popular-recipe", controllerGetPopularRecipes);
 
-router.delete("/:recipeId", isValidId, controllerRemoveRecipe);
+router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
 
-router.put(
-  "/:recipeId",
-  isValidId,
-  validateRecipeUpdate,
-  controllerUpdateRecipe
-);
+router.delete("/own-recipes/:recipeId", isValidId, controllerRemoveRecipe);
 
-router.patch(
-  "/:recipeId/favorite",
-  isValidId,
-  validateRecipeFavoriteUpdate,
-  controllerUpdateStatusRecipe
-);
+router.put("/:recipeId", isValidId, validateRecipeUpdate, controllerUpdateRecipe);
+
+router.patch("/:recipeId/favorite", isValidId, validateRecipeFavoriteUpdate, controllerUpdateStatusRecipe);
 
 module.exports = router;
