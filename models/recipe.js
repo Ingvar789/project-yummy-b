@@ -56,10 +56,9 @@ const recipeSchemaMongoose = new Schema(
       type: Array,
       require: true,
     },
-
-    favorites: {
-      type: Array,
-      default: null,
+    favoritesCounter: {
+      type: Number,
+      default: 0,
     },
     owner: {
       type: Schema.Types.ObjectId,
