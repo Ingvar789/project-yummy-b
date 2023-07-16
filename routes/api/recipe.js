@@ -29,12 +29,13 @@ router.use(authentication);
 router.get("/category-list", controllerCategoryList);
 // recipes by categories for main page
 router.get("/main-page", controllerMainPage);
+// search recipes by keyword
+router.get("/search", controllerSearchByTitle);
 // recipes by category, 8 recipe per page
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
-// search recipes by keyword
-router.get("/search", controllerSearchByTitle);
+
 
 // popular recipes
 // router.get("/popular-recipe", controllerGetPopularRecipes);
