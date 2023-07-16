@@ -21,6 +21,10 @@
       "description": "Recipes endpoints"
     },
     {
+      "name": "Popular recipes",
+      "description": "Popular recipes endpoints"
+    },
+    {
       "name": "Ingredients",
       "description": "Ingredients endpoints"
     },
@@ -34,7 +38,7 @@
     }
   ],
   "paths": {
-    "/users/register": {
+    "/api/users/register": {
       "post": {
         "tags": ["Auth"],
         "summary": "Create a new user",
@@ -76,7 +80,7 @@
         }
       }
     },
-    "/users/login": {
+    "/api/users/login": {
       "post": {
         "tags": ["Auth"],
         "summary": "User login",
@@ -118,7 +122,7 @@
         }
       }
     },
-    "/users/logout": {
+    "/api/users/logout": {
       "post": {
         "tags": ["Auth"],
         "summary": "User logout",
@@ -140,7 +144,7 @@
         }
       }
     },
-    "/users/current": {
+    "/api/users/current": {
       "get": {
         "tags": ["Auth"],
         "summary": "Get information about the current user",
@@ -168,7 +172,7 @@
         }
       }
     },
-    "/users/update-user": {
+    "/api/users/update-user": {
       "patch": {
         "tags": ["Auth"],
         "summary": "Update info about user",
@@ -238,7 +242,7 @@
         }
       }
     },
-    "/users/subscribe": {
+    "/api/users/subscribe": {
       "patch": {
         "tags": ["Auth"],
         "summary": "Update user's subscription",
@@ -346,7 +350,6 @@
         }
       }
     },
-
     "/api/recipes/category/{categoryName}": {
       "get": {
         "tags": ["Recipes"],
@@ -354,7 +357,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "Category",
+            "name": "categoryName",
             "type": "string",
             "enum": [
               "Beef",
@@ -374,12 +377,6 @@
             ],
             "required": true,
             "description": "Name of category"
-          },
-          {
-            "in": "query",
-            "name": "skip",
-            "type": "integer",
-            "description": "The number of items to skip before starting to collect the result set"
           },
           {
             "in": "query",
@@ -456,7 +453,7 @@
         }
       }
     },
-    "/api/recipes/{id}": {
+    "/api/recipes/recipe/{id}": {
       "get": {
         "tags": ["Recipes"],
         "summary": "Return a recipe by ID",
@@ -525,6 +522,59 @@
                   "type": "object",
                   "schema": {
                     "$ref": "#/components/schemas/RecipeSchema"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/recipes/popular-recipe": {
+      "get": {
+        "tags": ["Popular recipes"],
+        "summary": "Return a list of popular recipes (sorted by popularity among users)",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "A JSON array of recipes id, title and favoritesCounter",
+            "content": {
+              "application/json": {
+                "type": "array",
+                "description": "Array of recipes",
+                "items": {
+                  "type": "object",
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Recipe's id",
+                        "example": "6462a8f74c3d0ddd28897fc3"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "Recipe's title",
+                        "example": "Honey Teriyaki Salmon"
+                      },
+                      "favoritesCounter": {
+                        "type": "number",
+                        "description": "how many users add recipe ti favorites",
+                        "example": "15"
+                      }
+                    }
                   }
                 }
               }
