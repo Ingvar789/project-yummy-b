@@ -1,7 +1,6 @@
 const HttpError = require("../helpers/HttpError");
 const { Recipe } = require("../models/recipe");
 const controlWrapper = require("../decorators/controllWrapper");
-const { image } = require("../helpers/cloudinary");
 const { cloudinary } = require("../helpers");
 const Jimp = require("jimp");
 const fs = require("fs").promises;
@@ -133,8 +132,13 @@ const controllerRemoveRecipe = async (req, res) => {
   return res.status(200).json({ message: "Recipe has deleted" });
 };
 
-const controllerUpdateRecipe = async (req, res) => {
-  res.json(req.body);
+const controllergetRecipeByUserId = async (req, res) => {
+  const { _id: owner } = req.user;
+  const result = await Recipe.find({owner});
+  if (!result) {
+      throw new HttpError(404, `Recipe not found`)
+    }
+    res.status(200).json(result);
 };
 
 const controllerUpdateStatusRecipe = async (req, res) => {
@@ -166,7 +170,7 @@ module.exports = {
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
-  controllerUpdateRecipe: controlWrapper(controllerUpdateRecipe),
+  controllergetRecipeByUserId: controlWrapper(controllergetRecipeByUserId),
   controllerUpdateStatusRecipe: controlWrapper(controllerUpdateStatusRecipe),
   controllerSearchByTitle: controlWrapper(controllerSearchByTitle),
   controllerGetPopularRecipes: controlWrapper(controllerGetPopularRecipes),
