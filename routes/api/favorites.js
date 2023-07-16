@@ -3,7 +3,7 @@ const {
   controllerGetFavorites,
   controllerAddToFavorites,
   controllerDeleteFromFavorites,
-} = require("../../controllers/favorite");
+} = require("../../controllers/favorites");
 
 const authentication = require("../../middlewares/authentication");
 const isValidId = require("../../middlewares/isValidId");

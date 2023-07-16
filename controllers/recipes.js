@@ -1,5 +1,5 @@
 const HttpError = require("../helpers/HttpError");
-const { Recipe } = require("../models/recipe");
+const { Recipe: Recipes } = require("../models/recipe");
 const controlWrapper = require("../decorators/controllWrapper");
 const { cloudinary } = require("../helpers");
 const Jimp = require("jimp");
@@ -33,7 +33,7 @@ const controllerMainPage = async (req, res) => {
 
   const latestRecipes = {};
 
-  const allRecipe = await Recipe.find();
+  const allRecipe = await Recipes.find();
 
   categories.forEach((category) => {
     const recipes = allRecipe
@@ -53,8 +53,8 @@ const controllerGetRecipesByCategory = async (req, res) => {
   const skip = (page - 1) * limit;
 
   try {
-    const totalRecipes = await Recipe.countDocuments({ category });
-    const recipes = await Recipe.find({ category }).skip(skip).limit(limit);
+    const totalRecipes = await Recipes.countDocuments({ category });
+    const recipes = await Recipes.find({ category }).skip(skip).limit(limit);
     const totalPages = Math.ceil(totalRecipes / limit);
 
     res.json({
@@ -70,7 +70,7 @@ const controllerGetRecipesByCategory = async (req, res) => {
 
 const controllerGetRecipeById = async (req, res) => {
   const { recipeId } = req.params;
-  const recipe = await Recipe.findById(recipeId);
+  const recipe = await Recipes.findById(recipeId);
   if (!recipe) {
     throw HttpError(404, "Not found");
   }
@@ -78,7 +78,7 @@ const controllerGetRecipeById = async (req, res) => {
 };
 
 const controllerGetPopularRecipes = async (req, res) => {
-  const popularRecipes = await Recipe.find().sort("-favoritesCounter");
+  const popularRecipes = await Recipes.find().sort("-favoritesCounter");
 
   const popularRecipeInfo = popularRecipes.map((recipe) => {
     return {
@@ -118,23 +118,23 @@ const controllerAddRecipe = async (req, res) => {
   }
 
   console.log(preview);
-  const newRecipe = await Recipe.create({ ...req.body, preview, owner });
+  const newRecipe = await Recipes.create({ ...req.body, preview, owner });
   res.status(201).json(newRecipe);
 };
 
 const controllerRemoveRecipe = async (req, res) => {
   const { recipeId } = req.params;
 
-  const deleteRecipe = await Recipe.findOneAndRemove({ _id: recipeId });
+  const deleteRecipe = await Recipes.findOneAndRemove({ _id: recipeId });
   if (!deleteRecipe) {
     throw new HttpError(404, `Recipe with id ${recipeId} not found`);
   }
-  return res.status(200).json({ message: "Recipe has deleted" });
+  return res.status(200).json({ message: "Recipes has deleted" });
 };
 
 const controllerGetRecipeByUserId = async (req, res) => {
   const { _id: owner } = req.user;
-  const result = await Recipe.find({owner});
+  const result = await Recipes.find({owner});
   if (!result) {
       throw new HttpError(404, `Recipe not found`)
     }
@@ -151,7 +151,7 @@ const controllerSearchByTitle = async (req, res) => {
   if (title === "") {
     throw new HttpError(400, `Empty search field`);
   }
-  const searchRecipe = await Recipe.find({
+  const searchRecipe = await Recipes.find({
     title: { $regex: title, $options: "i" },
   });
   console.log(searchRecipe);

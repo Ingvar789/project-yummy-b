@@ -15,11 +15,10 @@ const {
   controllerGetRecipeById,
   controllerAddRecipe,
   controllerRemoveRecipe,
-  controllergetRecipeByUserId,
+  controllerGetRecipeByUserId,
   controllerGetPopularRecipes,
-  controllerUpdateStatusRecipe,
   controllerSearchByTitle,
-} = require("../../controllers/recipe");
+} = require("../../controllers/recipes");
 
 const router = express.Router();
 
@@ -36,14 +35,12 @@ router.get("/category/:categoryName", controllerGetRecipesByCategory);
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
 // get recipes by user id
-router.get("/own-recipes/:recipeId", isValidId, controllergetRecipeByUserId);
-
-
+router.get("/own-recipes/:recipeId", isValidId, controllerGetRecipeByUserId);
 // popular recipes
 router.get("/popular-recipe", controllerGetPopularRecipes);
-
+// add recipe
 router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
-
+// delete recipe
 router.delete("/own-recipes/:recipeId", isValidId, controllerRemoveRecipe);
 
 
