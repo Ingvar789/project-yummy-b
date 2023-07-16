@@ -12,9 +12,7 @@ const {
   controllerUpdateUser,
   controllerVerifyEmail,
   controllerResendVerifyEmail,
-  controllerVerify
 } = require("../../controllers/users");
-
 
 const router = express.Router();
 
@@ -31,10 +29,8 @@ router.patch("/subscribe", authentication, validate(joiAuthSchemas.userSchemaSub
 // manage data-user
 router.patch("/update-user", authentication, upload.single("avatar"), controllerUpdateUser);
 // email verify
-router.get("/verify/:verificationToken", controllerVerifyEmail, controllerVerify);
+router.get("/verify/:verificationToken", controllerVerifyEmail);
 // resend email verification
 router.post("/verify", validate(joiAuthSchemas.userEmailVerificationJoi), controllerResendVerifyEmail);
-
-
 
 module.exports = router;
