@@ -38,8 +38,9 @@ router.get("/:recipeId", isValidId, controllerGetRecipeById);
 // get recipes by user id
 router.get("/own-recipes/:recipeId", isValidId, controllergetRecipeByUserId);
 
+
 // popular recipes
-// router.get("/popular-recipe", controllerGetPopularRecipes);
+router.get("/popular-recipe", controllerGetPopularRecipes);
 
 router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
 

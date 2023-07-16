@@ -77,7 +77,19 @@ const controllerGetRecipeById = async (req, res) => {
   res.json(recipe);
 };
 
-const controllerGetPopularRecipes = async (req, res) => {};
+const controllerGetPopularRecipes = async (req, res) => {
+  const popularRecipes = await Recipe.find().sort("-favoritesCounter");
+
+  const popularRecipeInfo = popularRecipes.map((recipe) => {
+    return {
+      id: recipe._id,
+      title: recipe.title,
+      favoritesCounter: recipe.favoritesCounter,
+    };
+  });
+
+  res.status(200).json(popularRecipeInfo);
+};
 
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
@@ -142,7 +154,7 @@ const controllerSearchByTitle = async (req, res) => {
   const searchRecipe = await Recipe.find({
     title: { $regex: title, $options: "i" },
   });
-console.log(searchRecipe)
+  console.log(searchRecipe);
   if (searchRecipe.length === 0) {
     throw HttpError(404, "recipe not found");
   }
@@ -161,4 +173,5 @@ module.exports = {
   controllergetRecipeByUserId: controlWrapper(controllergetRecipeByUserId),
   controllerUpdateStatusRecipe: controlWrapper(controllerUpdateStatusRecipe),
   controllerSearchByTitle: controlWrapper(controllerSearchByTitle),
+  controllerGetPopularRecipes: controlWrapper(controllerGetPopularRecipes),
 };
