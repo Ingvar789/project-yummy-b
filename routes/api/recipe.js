@@ -15,7 +15,7 @@ const {
   controllerGetRecipeById,
   controllerAddRecipe,
   controllerRemoveRecipe,
-  controllerUpdateRecipe,
+  controllergetRecipeByUserId,
   controllerGetPopularRecipes,
   controllerUpdateStatusRecipe,
   controllerSearchByTitle,
@@ -35,7 +35,8 @@ router.get("/search", controllerSearchByTitle);
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
-
+// get recipes by user id
+router.get("/own-recipes/:recipeId", isValidId, controllergetRecipeByUserId);
 
 // popular recipes
 // router.get("/popular-recipe", controllerGetPopularRecipes);
@@ -44,11 +45,5 @@ router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
 
 router.delete("/own-recipes/:recipeId", isValidId, controllerRemoveRecipe);
 
-router.put(
-  "/:recipeId",
-  isValidId,
-  validateRecipeUpdate,
-  controllerUpdateRecipe
-);
 
 module.exports = router;
