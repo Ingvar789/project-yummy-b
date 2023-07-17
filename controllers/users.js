@@ -187,15 +187,11 @@ const controllerUpdateSubscription = async (req, res) => {
   const { _id, subscription } = req.user;
   const { email } = req.body;
 
-  if (subscription) {
+  if (subscription !== "") {
     throw HttpError(404, "You are already subscribed");
   }
 
-  const result = await User.findByIdAndUpdate(
-    _id,
-    { subscription: true },
-    { new: true }
-  );
+  const result = await User.findByIdAndUpdate(_id, { subscription: email },);
 
   if (!result) {
     throw HttpError(404, "Not found");
@@ -210,7 +206,9 @@ const controllerUpdateSubscription = async (req, res) => {
 
   await sendEmail(subscribedEmail);
 
-  res.status(200).json({ _id, email, subscription: result.subscription });
+  const updatedSubscription = await User.findById(_id);
+
+  res.status(200).json({ subscription: updatedSubscription.subscription });
 };
 
 const controllerUpdateUser = async (req, res) => {

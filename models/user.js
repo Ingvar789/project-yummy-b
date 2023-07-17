@@ -33,7 +33,6 @@ const userSchemaSubscriptionJoi = Joi.object({
     .pattern(emailRegex)
     .required()
     .messages({ "any.required": `missing required email field` }),
-  subscription: Joi.boolean(),
 });
 
 const userEmailVerificationJoi = Joi.object({
@@ -74,8 +73,9 @@ const userSchemaMongoose = new Schema(
       type: String,
     },
     subscription: {
-      type: Boolean,
-      default: false,
+      type: String,
+      match: emailRegex,
+      default: "",
     },
     token: String,
     verify: {
@@ -106,6 +106,13 @@ const userSchemaMongoose = new Schema(
       ],
       default: [],
     },
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Recipe",
+      },
+    ],
+
   },
   { versionKey: false, timestamps: true }
 );
