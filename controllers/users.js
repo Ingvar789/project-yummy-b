@@ -7,7 +7,6 @@ const fs = require("fs").promises;
 const Jimp = require("jimp");
 const gravatar = require("gravatar");
 const { nanoid } = require("nanoid");
-const mongoose = require("mongoose");
 
 const { BASE_URL } = process.env;
 const { SECRET_KEY } = process.env;
@@ -53,7 +52,7 @@ const controllerRegister = async (req, res) => {
     verificationToken: verificationToken,
   });
 
-// const emailImage = await cloudinary.image('email-images/qa40f3rh2wylnompmzeq');
+  // const emailImage = await cloudinary.image('email-images/qa40f3rh2wylnompmzeq');
 
   const verifyEmail = {
     to: email,
@@ -327,7 +326,7 @@ const controllerUpdateSubscription = async (req, res) => {
     throw HttpError(404, "You are already subscribed");
   }
 
-  const result = await User.findByIdAndUpdate(_id, { subscription: email },);
+  const result = await User.findByIdAndUpdate(_id, { subscription: email });
 
   if (!result) {
     throw HttpError(404, "Not found");
@@ -379,39 +378,23 @@ const controllerUpdateUser = async (req, res) => {
 const controllerGetShoppingList = async (req, res) => {
   const { _id } = req.user;
 
-  try {
-    // Отримати дані користувача з повним списком покупок
-    const user = await User.findById(_id).populate("shoppingList.id");
+  const user = await User.findById(_id).populate("shoppingList.id");
 
-    // Повернути список покупок у відповідь
-    res.json(user.shoppingList);
-  } catch (error) {
-    // Обробка помилок
-    console.error("Error while fetching shopping list:", error);
-    res.status(500).json({ message: "Error while fetching shopping list" });
-  }
+  res.json(user.shoppingList);
 };
 
 const controllerUpdateIngredientToShoppingList = async (req, res) => {
   const { _id, shoppingList } = req.user;
-  const { ingredientId, measure, recipeId } = req.body;
+  const { id, measure, recipeId } = req.body;
 
   const existsInShoppingList = shoppingList.some(
-    (item) =>
-      item.ingredientId.toString() === ingredientId &&
-      item.recipeId.toString() === recipeId.toString()
+    (item) => item.id === id && item.recipeId === recipeId.toString()
   );
-
-  const ingredientObjectId = new mongoose.Types.ObjectId(ingredientId);
-  const recipeObjectId = new mongoose.Types.ObjectId(recipeId.toString());
 
   if (existsInShoppingList) {
     await User.findByIdAndUpdate(_id, {
       $pull: {
-        shoppingList: {
-          ingredientId: ingredientObjectId,
-          recipeId: recipeObjectId,
-        },
+        shoppingList: { id, recipeId },
       },
     });
     res.json({ message: "The ingredient is delete to the shopping list" });
@@ -419,7 +402,7 @@ const controllerUpdateIngredientToShoppingList = async (req, res) => {
     await User.findByIdAndUpdate(
       _id,
       {
-        $push: { shoppingList: { ingredientId, measure, recipeId } },
+        $push: { shoppingList: { id, measure, recipeId: recipeId.toString() } },
       },
       { new: true }
     );
@@ -437,5 +420,7 @@ module.exports = {
   controllerVerifyEmail: controlWrapper(controllerVerifyEmail),
   controllerResendVerifyEmail: controlWrapper(controllerResendVerifyEmail),
   controllerGetShoppingList: controlWrapper(controllerGetShoppingList),
-  controllerUpdateIngredientToShoppingList: controlWrapper(controllerUpdateIngredientToShoppingList),
+  controllerUpdateIngredientToShoppingList: controlWrapper(
+    controllerUpdateIngredientToShoppingList
+  ),
 };

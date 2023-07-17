@@ -4,7 +4,6 @@ const controlWrapper = require("../decorators/controllWrapper");
 const { cloudinary } = require("../helpers");
 const Jimp = require("jimp");
 const fs = require("fs").promises;
-const { nanoid } = require("nanoid");
 
 const controllerCategoryList = async (req, res) => {
   const categories = [
@@ -96,6 +95,7 @@ const controllerGetPopularRecipes = async (req, res) => {
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner, token: ownerid } = req.user;
 console.log(owner);
+
   let preview;
 
   if (req.file) {
@@ -121,6 +121,7 @@ console.log(owner);
 
   console.log(preview);
   const newRecipe = await Recipes.create({...req.body, preview, owner,  ownerid });
+
   res.status(201).json(newRecipe);
 };
 
@@ -145,8 +146,9 @@ const controllerGetRecipeByUserId = async (req, res) => {
     }
   const total = await Recipes.countDocuments({ownerid});
   console.log(ownerid);
+
   const totalPages = Math.ceil(total / limit);
-    res.status(200).json({result, totalPages,});
+  res.status(200).json({ result, totalPages });
 };
 
 const controllerUpdateStatusRecipe = async (req, res) => {
