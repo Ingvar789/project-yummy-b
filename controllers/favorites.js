@@ -7,8 +7,29 @@ const controllerGetFavorites = async (req, res) => {
   const { id } = req.user;
 
   const user = await User.findById(id);
-  
-  res.status(200).json({ favorites: user.favorites });
+
+  const favoriteRecipeIds = user.favorites;
+
+  const favoriteRecipes = await Recipe.find({
+    _id: { $in: favoriteRecipeIds },
+  });
+
+  const favoriteRecipeInfo = favoriteRecipes.map((recipe) => {
+    return {
+      id: recipe._id,
+      title: recipe.title,
+      thumb: recipe.thumb,
+      instructions: recipe.instructions,
+      description: recipe.description,
+      preview: recipe.preview,
+
+      time: recipe.time,
+    };
+  });
+
+  res.status(200).json({
+    favoriteRecipeInfo,
+  });
 };
 
 const controllerAddToFavorites = async (req, res) => {
@@ -21,7 +42,7 @@ const controllerAddToFavorites = async (req, res) => {
     throw HttpError(404, "User not found");
   }
 
-  const recipe = await Recipe.findById(recipeId);
+  const recipe = await Recipe.findById(recipeId).populate();
 
   if (!recipe) {
     throw HttpError(404, "Recipe not found");
