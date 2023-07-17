@@ -136,7 +136,7 @@ const controllerRemoveRecipe = async (req, res) => {
 
 const controllerGetRecipeByUserId = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = 4 } = req.query;
+  const {  limit = 4 } = req.query;
  
 
   const result = await Recipes.find({owner}).limit(limit);;
