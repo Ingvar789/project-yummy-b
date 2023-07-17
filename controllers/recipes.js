@@ -94,7 +94,7 @@ const controllerGetPopularRecipes = async (req, res) => {
 };
 
 const controllerAddRecipe = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner, token: ownerid } = req.user;
 console.log(owner);
   let preview;
 
@@ -120,7 +120,7 @@ console.log(owner);
   }
 
   console.log(preview);
-  const newRecipe = await Recipes.create({...req.body, preview, owner });
+  const newRecipe = await Recipes.create({...req.body, preview, owner,  ownerid });
   res.status(201).json(newRecipe);
 };
 
@@ -135,16 +135,16 @@ const controllerRemoveRecipe = async (req, res) => {
 };
 
 const controllerGetRecipeByUserId = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner, token: ownerid } = req.user;
   const {  limit = 4 } = req.query;
  
 
-  const result = await Recipes.find({owner}).limit(limit);;
+  const result = await Recipes.find({ownerid}).limit(limit);;
   if (!result) {
       throw new HttpError(404, `Recipe not found`)
     }
-  const total = await Recipes.countDocuments({owner});
-  console.log(total);
+  const total = await Recipes.countDocuments({ownerid});
+  console.log(ownerid);
   const totalPages = Math.ceil(total / limit);
     res.status(200).json({result, totalPages,});
 };
