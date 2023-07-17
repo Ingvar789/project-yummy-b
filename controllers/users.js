@@ -243,7 +243,7 @@ const controllerUpdateUser = async (req, res) => {
 };
 
 const controllerGetShoppingList = async (req, res) => {
-  const { _id, shoppingList } = req.user;
+  const { _id } = req.user;
 
   try {
     // Отримати дані користувача з повним списком покупок
