@@ -127,7 +127,7 @@ console.log(owner);
 const controllerRemoveRecipe = async (req, res) => {
   const { recipeId } = req.params;
 
-  const deleteRecipe = await Recipes.findOneAndRemove({ _id: recipeId }).limit(limit);;
+  const deleteRecipe = await Recipes.findOneAndRemove({ _id: recipeId });
   if (!deleteRecipe) {
     throw new HttpError(404, `Recipe with id ${recipeId} not found`);
   }
@@ -136,14 +136,14 @@ const controllerRemoveRecipe = async (req, res) => {
 
 const controllerGetRecipeByUserId = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = 4 } = req.query;
+  const {  limit = 4 } = req.query;
  
 
-  const result = await Recipes.find({owner});
+  const result = await Recipes.find({owner}).limit(limit);;
   if (!result) {
       throw new HttpError(404, `Recipe not found`)
     }
-  const total = result.length;
+  const total = await Recipes.countDocuments({owner});
   console.log(total);
   const totalPages = Math.ceil(total / limit);
     res.status(200).json({result, totalPages,});
