@@ -86,12 +86,33 @@ const userSchemaMongoose = new Schema(
       type: String,
       required: [true, "Verify token is required"],
     },
+    shoppingList: {
+      _id: false,
+      type: [
+        {
+          ingredientId: {
+            type: Schema.Types.ObjectId,
+            ref: "ingredient",
+          },
+          recipeId: {
+            type: Schema.Types.ObjectId,
+            ref: "recipe",
+          },
+          measure: {
+            type: [String],
+            default: [],
+          },
+        },
+      ],
+      default: [],
+    },
     favorites: [
       {
         type: Schema.Types.ObjectId,
         ref: "Recipe",
       },
     ],
+
   },
   { versionKey: false, timestamps: true }
 );
