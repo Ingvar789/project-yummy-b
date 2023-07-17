@@ -4,7 +4,6 @@ const controlWrapper = require("../decorators/controllWrapper");
 const { cloudinary } = require("../helpers");
 const Jimp = require("jimp");
 const fs = require("fs").promises;
-const { nanoid } = require("nanoid");
 
 const controllerCategoryList = async (req, res) => {
   const categories = [
@@ -95,7 +94,7 @@ const controllerGetPopularRecipes = async (req, res) => {
 
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
-console.log(owner);
+  console.log(owner);
   let preview;
 
   if (req.file) {
@@ -120,7 +119,7 @@ console.log(owner);
   }
 
   console.log(preview);
-  const newRecipe = await Recipes.create({...req.body, preview, owner });
+  const newRecipe = await Recipes.create({ ...req.body, preview, owner });
   res.status(201).json(newRecipe);
 };
 
@@ -136,17 +135,16 @@ const controllerRemoveRecipe = async (req, res) => {
 
 const controllerGetRecipeByUserId = async (req, res) => {
   const { _id: owner } = req.user;
-  const {  limit = 4 } = req.query;
- 
+  const { limit = 4 } = req.query;
 
-  const result = await Recipes.find({owner}).limit(limit);;
+  const result = await Recipes.find({ owner }).limit(limit);
   if (!result) {
-      throw new HttpError(404, `Recipe not found`)
-    }
-  const total = await Recipes.countDocuments({owner});
+    throw new HttpError(404, `Recipe not found`);
+  }
+  const total = await Recipes.countDocuments({ owner });
   console.log(total);
   const totalPages = Math.ceil(total / limit);
-    res.status(200).json({result, totalPages,});
+  res.status(200).json({ result, totalPages });
 };
 
 const controllerUpdateStatusRecipe = async (req, res) => {
@@ -172,7 +170,9 @@ const controllerSearchByTitle = async (req, res) => {
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
+  controllerGetRecipesByCategory: controlWrapper(
+    controllerGetRecipesByCategory
+  ),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),

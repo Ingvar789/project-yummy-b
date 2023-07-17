@@ -112,7 +112,6 @@ const userSchemaMongoose = new Schema(
         ref: "Recipe",
       },
     ],
-
   },
   { versionKey: false, timestamps: true }
 );
