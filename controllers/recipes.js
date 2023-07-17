@@ -1,5 +1,6 @@
 const HttpError = require("../helpers/HttpError");
 const { Recipe: Recipes } = require("../models/recipe");
+const Ingredient = require("../models/ingredient");
 const controlWrapper = require("../decorators/controllWrapper");
 const { cloudinary } = require("../helpers");
 const Jimp = require("jimp");
@@ -70,10 +71,11 @@ const controllerGetRecipesByCategory = async (req, res) => {
 
 const controllerGetRecipeById = async (req, res) => {
   const { recipeId } = req.params;
-  const recipe = await Recipes.findById(recipeId);
+  const recipe = await Recipes.findById(recipeId).populate("ingredients");
   if (!recipe) {
     throw HttpError(404, "Not found");
   }
+
   res.json(recipe);
 };
 

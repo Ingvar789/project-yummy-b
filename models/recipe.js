@@ -53,7 +53,18 @@ const recipeSchemaMongoose = new Schema(
       type: Array,
     },
     ingredients: {
-      type: Array,
+      type: [
+     {
+        ingredientId: {
+            type: Schema.Types.ObjectId,
+            ref: 'ingredient',
+        },
+        measure: {
+            type: [String],
+            default: [],
+        },
+      },
+    ],
       require: true,
     },
     favoritesCounter: {
