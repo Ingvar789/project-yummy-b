@@ -19,6 +19,9 @@ const joiSchemas = {
 };
 const recipeSchemaMongoose = new Schema(
   {
+    _id: {
+         type: Schema.Types.ObjectId,
+    },
     title: {
       type: String,
       require: true,
@@ -53,18 +56,19 @@ const recipeSchemaMongoose = new Schema(
       type: Array,
     },
     ingredients: {
-      type: [
-     {
-        ingredientId: {
-            type: Schema.Types.ObjectId,
-            ref: 'ingredient',
-        },
-        measure: {
-            type: [String],
-            default: [],
-        },
-      },
-    ],
+        _id: false,
+        type: [
+            {
+                id: {
+                    type: String,
+                    ref: "ingredient"
+                },
+                measure: {
+                    type: [String],
+                    default: [],
+                },
+            },
+        ],
       require: true,
     },
     favoritesCounter: {

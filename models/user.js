@@ -90,12 +90,12 @@ const userSchemaMongoose = new Schema(
       _id: false,
       type: [
         {
-          ingredientId: {
-            type: Schema.Types.ObjectId,
+          id: {
+            type: String,
             ref: "ingredient",
           },
           recipeId: {
-            type: Schema.Types.ObjectId,
+            type: String,
             ref: "recipe",
           },
           measure: {

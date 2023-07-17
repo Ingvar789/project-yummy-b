@@ -245,7 +245,7 @@ const controllerGetShoppingList = async (req, res) => {
 
   try {
     // Отримати дані користувача з повним списком покупок
-    const user = await User.findById(_id).populate("shoppingList.ingredientId");
+    const user = await User.findById(_id).populate("shoppingList.id");
 
     // Повернути список покупок у відповідь
     res.json(user.shoppingList);
@@ -301,7 +301,5 @@ module.exports = {
   controllerVerifyEmail: controlWrapper(controllerVerifyEmail),
   controllerResendVerifyEmail: controlWrapper(controllerResendVerifyEmail),
   controllerGetShoppingList: controlWrapper(controllerGetShoppingList),
-  controllerUpdateIngredientToShoppingList: controlWrapper(
-    controllerUpdateIngredientToShoppingList
-  ),
+  controllerUpdateIngredientToShoppingList: controlWrapper(controllerUpdateIngredientToShoppingList),
 };

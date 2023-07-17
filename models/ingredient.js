@@ -4,6 +4,9 @@ const { Schema, model } = mongoose;
 
 const ingredientSchema = new Schema(
   {
+      _id: {
+          type: Schema.Types.ObjectId,
+      },
     name: {
       type: String,
       required: [true, "Set name of ingredients"],
