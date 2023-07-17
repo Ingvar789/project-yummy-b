@@ -53,11 +53,147 @@ const controllerRegister = async (req, res) => {
     verificationToken: verificationToken,
   });
 
+// const emailImage = await cloudinary.image('email-images/qa40f3rh2wylnompmzeq');
+
   const verifyEmail = {
     to: email,
     subject: "Verify Email",
-    html: `<h1>Welcome to <span style="font-size:40px; font-style: italic;">"So Yummy"</span> app!</h1>
-     <p>Follow the link to complete the registration</p><a target="_blank" href="https://basesnel.github.io/project-yummy-f/signin?verify=${verificationToken}"> Click to verify email </a>`,
+    html: `<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>So Yummy Email Vefification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet"
+    />
+</head>
+<body style="margin: 0; padding: 0">
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+    <tr>
+        <td>
+            <table
+                style="border-collapse: collapse"
+                border="0"
+                cellSpacing="0"
+                cellPadding="0"
+                align="center"
+                style="max-width: 600px"
+            >
+                <tbody>
+                <tr>
+                    <td
+                        align="center"
+                        bgcolor="#8BAA36"
+                        style="padding: 0px; font-family: Poppins"
+                    >
+                        <h2
+                            style="
+                      font-weight: 600;
+                      font-size: 32px;
+                      line-height: 1;
+                      color: #fafafa;
+                    "
+                        >
+                            So Yummy
+                        </h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        bgcolor="#FAFAFA"
+                        style="
+                    padding: 20px 30px 20px 30px;
+                    font-family: Poppins;
+                    font-weight: 600;
+                    background-image: url('http://res.cloudinary.com/dcmnkrdst/image/upload/v1689614787/email-images/qa40f3rh2wylnompmzeq.png');
+                    background-attachment: local;
+                    background-position: 0 0;
+                    background-size: 600px;
+                    background-repeat: no-repeat;
+                  "
+                    >
+                        <table
+                            border="0"
+                            cellPadding="0"
+                            cellSpacing="0"
+                            width="100%"
+                        >
+                            <tr>
+                                <td
+                                    align="center"
+                                    bgcolor="transparent"
+                                    style="padding: 10px 0px 10px 0px"
+                                >
+                                    <img
+                                        width="100"
+                                        style="display: block"
+                                        alt=""
+                                        src="http://res.cloudinary.com/dcmnkrdst/image/upload/v1689614787/email-images/kn397glmhnrthqthkk0i.png"
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    align="center"
+                                    bgcolor="transparent"
+                                    style="padding: 10px 0px 10px 0px; line-height: 1.6"
+                                >
+                                    <p>Welcome to the "So Yummy" app!</p>
+                                    <p>
+                                        To be in the application, please follow the link
+                                        below.
+                                    </p>
+                                    <p>
+                                        If you have not registered in our application, please
+                                        ignore this letter!
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    align="center"
+                                    bgcolor="transparent"
+                                    style="padding: 10px 0px 10px 0px"
+                                >
+                                    <p>
+                                        <a href="https://basesnel.github.io/project-yummy-f/signin?verify=${verificationToken}" style="color: #8baa36"
+                                        >Verify your mail.</a
+                                        >
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        align="center"
+                        bgcolor="#22252A"
+                        color="#fafafa"
+                        style="padding: 10px 30px 10px 30px; font-family: Poppins"
+                    >
+                        <table
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            width="100%"
+                        >
+                            <tr>
+                                <td><p style="color: #fafafa">So Yummy Company</p></td>
+                                <td align="right">
+                                    <p style="color: #fafafa">The best recipes</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>`,
   };
 
   await sendEmail(verifyEmail);
