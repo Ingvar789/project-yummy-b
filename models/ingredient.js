@@ -12,7 +12,7 @@ const ingredientSchema = new Schema(
       type: String,
       required: [true, "Set description of ingredients"],
     },
-    imgURL: {
+    img: {
       type: String,
       required: [true, "Set image of ingredient"],
     },
