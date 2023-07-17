@@ -77,6 +77,10 @@ const recipeSchemaMongoose = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
+    ownerid: {
+      type: String,
+      ref: "user",
+    },
   },
   { versionKey: false }
 );
