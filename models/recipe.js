@@ -19,9 +19,7 @@ const joiSchemas = {
 };
 const recipeSchemaMongoose = new Schema(
   {
-    _id: {
-         type: Schema.Types.ObjectId,
-    },
+ 
     title: {
       type: String,
       require: true,

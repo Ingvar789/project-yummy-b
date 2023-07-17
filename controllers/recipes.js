@@ -4,6 +4,7 @@ const controlWrapper = require("../decorators/controllWrapper");
 const { cloudinary } = require("../helpers");
 const Jimp = require("jimp");
 const fs = require("fs").promises;
+const { nanoid } = require("nanoid");
 
 const controllerCategoryList = async (req, res) => {
   const categories = [
@@ -94,7 +95,7 @@ const controllerGetPopularRecipes = async (req, res) => {
 
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
-
+console.log(owner);
   let preview;
 
   if (req.file) {
@@ -119,14 +120,14 @@ const controllerAddRecipe = async (req, res) => {
   }
 
   console.log(preview);
-  const newRecipe = await Recipes.create({ ...req.body, preview, owner });
+  const newRecipe = await Recipes.create({...req.body, preview, owner });
   res.status(201).json(newRecipe);
 };
 
 const controllerRemoveRecipe = async (req, res) => {
   const { recipeId } = req.params;
 
-  const deleteRecipe = await Recipes.findOneAndRemove({ _id: recipeId });
+  const deleteRecipe = await Recipes.findOneAndRemove({ _id: recipeId }).limit(limit);;
   if (!deleteRecipe) {
     throw new HttpError(404, `Recipe with id ${recipeId} not found`);
   }
@@ -135,11 +136,17 @@ const controllerRemoveRecipe = async (req, res) => {
 
 const controllerGetRecipeByUserId = async (req, res) => {
   const { _id: owner } = req.user;
+  const { page = 1, limit = 4 } = req.query;
+ 
+
   const result = await Recipes.find({owner});
   if (!result) {
       throw new HttpError(404, `Recipe not found`)
     }
-    res.status(200).json(result);
+  const total = result.length;
+  console.log(total);
+  const totalPages = Math.ceil(total / limit);
+    res.status(200).json({result, totalPages,});
 };
 
 const controllerUpdateStatusRecipe = async (req, res) => {
