@@ -138,9 +138,9 @@ const controllerRemoveRecipe = async (req, res) => {
 const controllerGetRecipeByUserId = async (req, res) => {
   const { _id: owner } = req.user;
   const {page = 1,  limit = 4 } = req.query;
- 
+  const skip = (page - 1) * limit;
 
-  const result = await Recipes.find({owner}).limit(limit);
+  const result = await Recipes.find({owner}).skip(skip).limit(limit);
   if (!result) {
       throw new HttpError(404, `Recipe not found`)
     }
