@@ -24,7 +24,7 @@ const controllerGetFavorites = async (req, res) => {
 
   const favoriteRecipeInfo = favoriteRecipes.map((recipe) => {
     return {
-      id: recipe._id,
+      _id: recipe._id,
       title: recipe.title,
       thumb: recipe.thumb,
       instructions: recipe.instructions,

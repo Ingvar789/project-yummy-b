@@ -83,7 +83,7 @@ const controllerGetPopularRecipes = async (req, res) => {
 
   const popularRecipeInfo = popularRecipes.map((recipe) => {
     return {
-      id: recipe._id,
+      _id: recipe._id,
       title: recipe.title,
       favoritesCounter: recipe.favoritesCounter,
     };
@@ -119,7 +119,6 @@ console.log(owner);
       "https://res.cloudinary.com/dvmiapyqk/image/upload/v1688894039/1_jyhhh3.png";
   }
 
-  console.log(preview);
   const newRecipe = await Recipes.create({...req.body, preview, owner });
 
   res.status(201).json(newRecipe);

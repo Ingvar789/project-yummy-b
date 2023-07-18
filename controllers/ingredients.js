@@ -25,7 +25,7 @@ const controllerSearchByIngredients = async (req, res) => {
   const result = await Recipe.find({
     ingredients: {
       $elemMatch: {
-        id: id,
+        _id: id,
       },
     },
   }).skip(skip).limit(limit);

@@ -119,7 +119,7 @@ const controllerRegister = async (req, res) => {
 
   res.status(201).json({
     user: {
-      id: newUser._id,
+      _id: newUser._id,
       name: newUser.name,
       email: newUser.email,
       subscription: newUser.subscription,
@@ -214,7 +214,7 @@ const controllerLogin = async (req, res) => {
     token: verifiedUser.token,
     verify: verifiedUser.verify,
     user: {
-      id: verifiedUser._id,
+      _id: verifiedUser._id,
       email: verifiedUser.email,
       subscription: verifiedUser.subscription,
       name: verifiedUser.name,
@@ -232,7 +232,7 @@ const controllerLogout = async (req, res) => {
 const controllerGetCurrent = async (req, res) => {
   const { _id, email, subscription, name, avatarURL, token } = req.user;
   res.json({
-    id: _id,
+    _id: _id,
     token,
     email,
     subscription,
