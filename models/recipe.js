@@ -3,19 +3,13 @@ const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
 
 const recipeSchemaJoi = Joi.object({
-  name: Joi.string()
-    .required()
-    .messages({ "any.required": `missing required name field` }),
-  favorite: Joi.boolean(),
-});
-
-const updateFavoriteSchemaJoi = Joi.object({
-  favorite: Joi.boolean().required(),
+    title: Joi.string().required().messages({ "any.required": `missing required title field` }),
+    category: Joi.string().required().messages({ "any.required": `missing required category field` }),
+    ingredients: Joi.object().required().messages({ "any.required": `missing required ingredients field` }),
 });
 
 const joiSchemas = {
   recipeSchemaJoi,
-  updateFavoriteSchemaJoi,
 };
 const recipeSchemaMongoose = new Schema(
   {

@@ -154,6 +154,7 @@ const controllerGetRecipeByUserId = async (req, res) => {
 const controllerSearchByTitle = async (req, res) => {
   const { title } = req.query;
   const {page = 1,  limit = 6 } = req.query;
+  const skip = (page - 1) * limit;
 
   if (title === "") {
     throw new HttpError(400, `Empty search field`);
@@ -163,12 +164,11 @@ const controllerSearchByTitle = async (req, res) => {
   });
   const searchRecipeLimit = await Recipes.find({
     title: { $regex: title, $options: "i" },
-  }).limit(limit);
+  }).skip(skip).limit(limit);
   if (searchRecipe.length === 0) {
     throw HttpError(404, "recipe not found");
   }
   const total = searchRecipe.length;
-  console.log(total);
   const totalPages = Math.ceil(total / limit);
   return res.json({searchRecipeLimit, currentPage: page, totalPages });
 };
