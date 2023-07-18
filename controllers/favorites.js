@@ -10,9 +10,17 @@ const controllerGetFavorites = async (req, res) => {
 
   const favoriteRecipeIds = user.favorites;
 
+  const { page = 1, limit = 4 } = req.query;
+  const skip = (page - 1) * limit;
+  const totalRecipes = favoriteRecipeIds.length;
+
   const favoriteRecipes = await Recipe.find({
     _id: { $in: favoriteRecipeIds },
-  });
+  })
+    .skip(skip)
+    .limit(limit);
+
+  const totalPages = Math.ceil(totalRecipes / limit);
 
   const favoriteRecipeInfo = favoriteRecipes.map((recipe) => {
     return {
@@ -22,13 +30,14 @@ const controllerGetFavorites = async (req, res) => {
       instructions: recipe.instructions,
       description: recipe.description,
       preview: recipe.preview,
-
       time: recipe.time,
     };
   });
 
   res.status(200).json({
     favoriteRecipeInfo,
+    currentPage: page,
+    totalPages,
   });
 };
 
