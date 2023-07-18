@@ -308,8 +308,9 @@ const controllerLogout = async (req, res) => {
 };
 
 const controllerGetCurrent = async (req, res) => {
-  const { email, subscription, name, avatarURL, token } = req.user;
+  const { _id, email, subscription, name, avatarURL, token } = req.user;
   res.json({
+    _id,
     token,
     email,
     subscription,
@@ -420,7 +421,5 @@ module.exports = {
   controllerVerifyEmail: controlWrapper(controllerVerifyEmail),
   controllerResendVerifyEmail: controlWrapper(controllerResendVerifyEmail),
   controllerGetShoppingList: controlWrapper(controllerGetShoppingList),
-  controllerUpdateIngredientToShoppingList: controlWrapper(
-    controllerUpdateIngredientToShoppingList
-  ),
+  controllerUpdateIngredientToShoppingList: controlWrapper(controllerUpdateIngredientToShoppingList),
 };
