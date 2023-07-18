@@ -69,8 +69,8 @@ const controllerGetRecipesByCategory = async (req, res) => {
 };
 
 const controllerGetRecipeById = async (req, res) => {
-  const { recipeId } = req.params;
-  const recipe = await Recipes.findById(recipeId).populate("ingredients.id");
+  const { id } = req.params;
+  const recipe = await Recipes.findById(id).populate("ingredients.id");
   if (!recipe) {
     throw HttpError(404, "Not found");
   }
@@ -120,17 +120,17 @@ console.log(owner);
   }
 
   console.log(preview);
-  const newRecipe = await Recipes.create({...req.body, preview, owner,  ownerid });
+  const newRecipe = await Recipes.create({...req.body, preview, owner });
 
   res.status(201).json(newRecipe);
 };
 
 const controllerRemoveRecipe = async (req, res) => {
-  const { recipeId } = req.params;
+  const { id } = req.params;
 
-  const deleteRecipe = await Recipes.findOneAndRemove({ _id: recipeId });
+  const deleteRecipe = await Recipes.findOneAndRemove({ _id: id });
   if (!deleteRecipe) {
-    throw new HttpError(404, `Recipe with id ${recipeId} not found`);
+    throw new HttpError(404, `Recipe with id ${id} not found`);
   }
   return res.status(200).json({ message: "Recipes has deleted" });
 };

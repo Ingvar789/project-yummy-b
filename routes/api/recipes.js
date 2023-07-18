@@ -31,15 +31,15 @@ router.get("/search", controllerSearchByTitle);
 // recipes by category, 8 recipe per page
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
 // get one recipe by id
-router.get("/:recipeId", isValidId, controllerGetRecipeById);
+router.get("/:id", isValidId, controllerGetRecipeById);
 // get recipes by user id
-router.get("/own-recipes/:userId", isValidId, controllerGetRecipeByUserId);
+router.get("/own-recipes/:id", isValidId, controllerGetRecipeByUserId);
 // popular recipes
 router.get("/popular-recipe", controllerGetPopularRecipes);
 // add recipe
 router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
-// delete recipe
-router.delete("/own-recipes/:recipeId", isValidId, controllerRemoveRecipe);
+// delete recipe by id
+router.delete("/own-recipes/:id", isValidId, controllerRemoveRecipe);
 // popular recipes
 router.get("/popular-recipe", controllerGetPopularRecipes);
 
