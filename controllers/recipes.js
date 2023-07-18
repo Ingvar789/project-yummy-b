@@ -145,14 +145,9 @@ const controllerGetRecipeByUserId = async (req, res) => {
       throw new HttpError(404, `Recipe not found`)
     }
   const total = await Recipes.countDocuments({ownerid});
-  console.log(ownerid);
 
   const totalPages = Math.ceil(total / limit);
   res.status(200).json({ result, totalPages });
-};
-
-const controllerUpdateStatusRecipe = async (req, res) => {
-  res.json(req.body);
 };
 
 const controllerSearchByTitle = async (req, res) => {
@@ -179,7 +174,6 @@ module.exports = {
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
   controllerGetRecipeByUserId: controlWrapper(controllerGetRecipeByUserId),
-  controllerUpdateStatusRecipe: controlWrapper(controllerUpdateStatusRecipe),
   controllerSearchByTitle: controlWrapper(controllerSearchByTitle),
   controllerGetPopularRecipes: controlWrapper(controllerGetPopularRecipes),
 };
