@@ -87,6 +87,13 @@ const controllerDeleteFromFavorites = async (req, res) => {
     throw HttpError(404, "User not found");
   }
 
+  if (user.favorites.length === 0) {
+    res.status(200).json({
+      message: "You don't have any favorite recipes yet.",
+    });
+    return;
+  }
+
   const recipe = await Recipe.findById(recipeId);
 
   if (!recipe) {
