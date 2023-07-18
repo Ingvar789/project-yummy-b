@@ -74,11 +74,11 @@ const controllerRegister = async (req, res) => {
     </td>
   </tr>
   <tr>
-    <td bgcolor="#FAFAFA" style="padding: 20px 30px 20px 30px; font-family: Poppins; font-weight: 600; background-image: url("http://res.cloudinary.com/dcmnkrdst/image/upload/v1689614787/email-images/qa40f3rh2wylnompmzeq.png"); background-attachment: local; background-position: 0 0;  background-size: 600px; background-repeat: no-repeat;">
+    <td bgcolor="#FAFAFA" style="padding: 20px 30px 20px 30px; font-family: Poppins; font-weight: 600; background-image: url('https://res.cloudinary.com/dcmnkrdst/image/upload/v1689614787/email-images/qa40f3rh2wylnompmzeq.png'); background-attachment: local; background-position: 0 0;  background-size: 600px; background-repeat: no-repeat;">
       <table  border="0" cellpadding="0" cellspacing="0" width="100%">
      <tr>
     <td align="center" bgcolor="transparent" style="padding: 10px 0px 10px 0px;">
-      <img width="100" style="display: block;" alt="" src="http://res.cloudinary.com/dcmnkrdst/image/upload/v1689614787/email-images/kn397glmhnrthqthkk0i.svg">
+      <img width="100" style="display: block;" alt="" src="https://res.cloudinary.com/dcmnkrdst/image/upload/v1689614787/email-images/kn397glmhnrthqthkk0i.svg">
     </td>
      </tr>
      <tr>
