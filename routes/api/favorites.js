@@ -13,7 +13,7 @@ const router = express.Router();
 router.use(authentication);
 
 router.get("/", controllerGetFavorites);
-router.patch("/:recipeId", isValidId, controllerAddToFavorites);
-router.delete("/:recipeId", isValidId, controllerDeleteFromFavorites);
+router.patch("/:id", isValidId, controllerAddToFavorites);
+router.delete("/:id", isValidId, controllerDeleteFromFavorites);
 
 module.exports = router;
