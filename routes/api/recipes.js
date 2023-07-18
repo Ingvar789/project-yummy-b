@@ -4,8 +4,6 @@ const isValidId = require("../../middlewares/isValidId");
 const upload = require("../../middlewares/upload");
 const {
   validateAddRecipe,
-  validateRecipeUpdate,
-  validateRecipeFavoriteUpdate,
 } = require("../../middlewares/recipeValidation");
 
 const {
@@ -35,7 +33,7 @@ router.get("/category/:categoryName", controllerGetRecipesByCategory);
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
 // get recipes by user id
-router.get("/own-recipes/:recipeId", isValidId, controllerGetRecipeByUserId);
+router.get("/own-recipes/:userId", isValidId, controllerGetRecipeByUserId);
 // popular recipes
 router.get("/popular-recipe", controllerGetPopularRecipes);
 // add recipe

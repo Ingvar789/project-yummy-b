@@ -52,8 +52,6 @@ const controllerRegister = async (req, res) => {
     verificationToken: verificationToken,
   });
 
-  // const emailImage = await cloudinary.image('email-images/qa40f3rh2wylnompmzeq');
-
   const verifyEmail = {
     to: email,
     subject: "Verify Email",
@@ -199,6 +197,7 @@ const controllerRegister = async (req, res) => {
 
   res.status(201).json({
     user: {
+      id: newUser._id,
       name: newUser.name,
       email: newUser.email,
       subscription: newUser.subscription,
@@ -293,11 +292,11 @@ const controllerLogin = async (req, res) => {
     token: verifiedUser.token,
     verify: verifiedUser.verify,
     user: {
+      id: verifiedUser._id,
       email: verifiedUser.email,
       subscription: verifiedUser.subscription,
       name: verifiedUser.name,
       avatarURL: verifiedUser.avatarURL,
-      id: verifiedUser._id,
     },
   });
 };
