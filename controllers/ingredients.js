@@ -10,6 +10,7 @@ const controllerIngredientsList = async (req, res) => {
 
 const controllerSearchByIngredients = async (req, res) => {
   const { ingredient } = req.query;
+  const {page = 1,  limit = 6 } = req.query;
 
   const ingredientSearch = await Ingredient.findOne({
     name: { $regex: ingredient, $options: "i" },
@@ -26,9 +27,11 @@ const controllerSearchByIngredients = async (req, res) => {
         id: id,
       },
     },
-  });
-
-  res.json(result);
+  }).limit(limit);
+  const total = result.length;
+  const totalPages = Math.ceil(total / limit);
+console.log(total)
+  res.json({result, currentPage: page, totalPages });
 };
 
 module.exports = {

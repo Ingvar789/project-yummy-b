@@ -297,6 +297,7 @@ const controllerLogin = async (req, res) => {
       subscription: verifiedUser.subscription,
       name: verifiedUser.name,
       avatarURL: verifiedUser.avatarURL,
+      id: verifiedUser._id,
     },
   });
 };

@@ -35,7 +35,7 @@ router.get("/category/:categoryName", controllerGetRecipesByCategory);
 // get one recipe by id
 router.get("/:recipeId", isValidId, controllerGetRecipeById);
 // get recipes by user id
-router.get("/own-recipes/:recipeId", controllerGetRecipeByUserId);
+router.get("/own-recipes/:recipeId", isValidId, controllerGetRecipeByUserId);
 // popular recipes
 router.get("/popular-recipe", controllerGetPopularRecipes);
 // add recipe
