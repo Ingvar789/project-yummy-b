@@ -120,7 +120,7 @@ console.log(owner);
   }
 
   console.log(preview);
-  const newRecipe = await Recipes.create({...req.body, preview, owner,  ownerid });
+  const newRecipe = await Recipes.create({...req.body, preview, owner });
 
   res.status(201).json(newRecipe);
 };
