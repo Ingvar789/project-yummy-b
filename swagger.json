@@ -33,7 +33,7 @@
       "description": "Own recipes endpoints"
     },
     {
-      "name": "Favorites",
+      "name": "Favorites recipes",
       "description": "Favorites endpoints"
     }
   ],
@@ -279,7 +279,7 @@
               "application/json": {
                 "type": "object",
                 "properties": {
-                  "id": {
+                  "_id": {
                     "type": "string",
                     "description": "User's id"
                   },
@@ -387,17 +387,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "properties": {
-                    "subscription": {
-                      "type": "string",
-                      "description": "User's email",
-                      "format": "email"
-                    },
-                    "example": {
-                      "subscription": "user@testmail.com"
-                    }
+                  "subscription": {
+                    "type": "string",
+                    "description": "User's email",
+                    "format": "email"
                   }
+                },
+                "example": {
+                  "subscription": "user@testmail.com"
                 }
               }
             }
@@ -431,7 +428,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    " id": {
+                    "id": {
                       "type": "object",
                       "properties": {
                         "_id": {
@@ -481,7 +478,7 @@
       },
       "patch": {
         "tags": ["Auth"],
-        "summary": "Add or remove an ingredient to a user's shopping list",
+        "summary": "Add or remove an ingredient to the user's shopping list",
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Shopping list's object",
@@ -506,6 +503,11 @@
                     "type": "string",
                     "description": "Recipe's id"
                   }
+                },
+                "example": {
+                  "id": "640c2dd963a319ea671e365c",
+                  "measure": ["25g"],
+                  "recipeId": "6462a8f74c3d0ddd28897fc3"
                 }
               }
             }
@@ -767,7 +769,7 @@
         }
       }
     },
-    "/api/recipes/popular-recipe": {
+    "/api/recipes/recipe/popular-recipe": {
       "get": {
         "tags": ["Popular recipes"],
         "summary": "Return a list of popular recipes (sorted by popularity among users)",
@@ -1048,7 +1050,7 @@
     },
     "/api/favorites/": {
       "get": {
-        "tags": ["Favorites"],
+        "tags": ["Favorites recipes"],
         "summary": "Return an array of the current user's favorite recipes (id)",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -1084,7 +1086,7 @@
     },
     "/api/favorites/{recipeId}": {
       "patch": {
-        "tags": ["Favorites"],
+        "tags": ["Favorites recipes"],
         "summary": "Add recipe to the current user's favorites",
         "parameters": [
           {
@@ -1124,7 +1126,7 @@
         }
       },
       "delete": {
-        "tags": ["Favorites"],
+        "tags": ["Favorites recipes"],
         "summary": "Delete recipe from the current user's favorites",
         "parameters": [
           {
@@ -1191,7 +1193,7 @@
           "user": {
             "type": "object",
             "properties": {
-              "id": {
+              "_id": {
                 "type": "string",
                 "description": "User's id"
               },
@@ -1263,7 +1265,7 @@
           "user": {
             "type": "object",
             "properties": {
-              "id": {
+              "_id": {
                 "type": "string",
                 "description": "User's id"
               },
@@ -1291,7 +1293,7 @@
       "CurrentUserResponse": {
         "type": "object",
         "properties": {
-          "id": {
+          "_id": {
             "type": "string",
             "description": "User's id"
           },
@@ -1321,24 +1323,24 @@
       "CategoryList": {
         "type": "array",
         "items": {
-          "type": "string",
-          "example": [
-            "Beef",
-            "Breakfast",
-            "Chicken",
-            "Dessert",
-            "Goat",
-            "Lamb",
-            "Miscellaneous",
-            "Pasta",
-            "Pork",
-            "Seafood",
-            "Side",
-            "Starter",
-            "Vegan",
-            "Vegetarian"
-          ]
-        }
+          "type": "string"
+        },
+        "example": [
+          "Beef",
+          "Breakfast",
+          "Chicken",
+          "Dessert",
+          "Goat",
+          "Lamb",
+          "Miscellaneous",
+          "Pasta",
+          "Pork",
+          "Seafood",
+          "Side",
+          "Starter",
+          "Vegan",
+          "Vegetarian"
+        ]
       },
       "IngredientsList": {
         "type": "array",

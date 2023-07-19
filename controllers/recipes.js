@@ -80,7 +80,7 @@ const controllerGetRecipeById = async (req, res) => {
 
 const controllerGetPopularRecipes = async (req, res) => {
   const popularRecipes = await Recipes.find().sort("-favoritesCounter");
-
+  console.log(popularRecipes);
   const popularRecipeInfo = popularRecipes.map((recipe) => {
     return {
       _id: recipe._id,
@@ -94,7 +94,7 @@ const controllerGetPopularRecipes = async (req, res) => {
 
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
-console.log(owner);
+  console.log(owner);
 
   let preview;
 
@@ -119,7 +119,7 @@ console.log(owner);
       "https://res.cloudinary.com/dvmiapyqk/image/upload/v1688894039/1_jyhhh3.png";
   }
 
-  const newRecipe = await Recipes.create({...req.body, preview, owner });
+  const newRecipe = await Recipes.create({ ...req.body, preview, owner });
 
   res.status(201).json(newRecipe);
 };
@@ -136,15 +136,15 @@ const controllerRemoveRecipe = async (req, res) => {
 
 const controllerGetRecipeByUserId = async (req, res) => {
   const { _id: owner } = req.user;
-  const {page = 1,  limit = 4 } = req.query;
+  const { page = 1, limit = 4 } = req.query;
   const skip = (page - 1) * limit;
 
-  const result = await Recipes.find({owner}).skip(skip).limit(limit);
+  const result = await Recipes.find({ owner }).skip(skip).limit(limit);
   if (!result) {
-      throw new HttpError(404, `Recipe not found`)
-    }
+    throw new HttpError(404, `Recipe not found`);
+  }
 
-  const total = await Recipes.countDocuments({owner});
+  const total = await Recipes.countDocuments({ owner });
 
   const totalPages = Math.ceil(total / limit);
   res.status(200).json({ result, totalPages, currentPage: page });
@@ -152,7 +152,7 @@ const controllerGetRecipeByUserId = async (req, res) => {
 
 const controllerSearchByTitle = async (req, res) => {
   const { title } = req.query;
-  const {page = 1,  limit = 6 } = req.query;
+  const { page = 1, limit = 6 } = req.query;
   const skip = (page - 1) * limit;
 
   if (title === "") {
@@ -163,19 +163,23 @@ const controllerSearchByTitle = async (req, res) => {
   });
   const searchRecipeLimit = await Recipes.find({
     title: { $regex: title, $options: "i" },
-  }).skip(skip).limit(limit);
+  })
+    .skip(skip)
+    .limit(limit);
   if (searchRecipe.length === 0) {
     throw HttpError(404, "recipe not found");
   }
   const total = searchRecipe.length;
   const totalPages = Math.ceil(total / limit);
-  return res.json({searchRecipeLimit, currentPage: page, totalPages });
+  return res.json({ searchRecipeLimit, currentPage: page, totalPages });
 };
 
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
+  controllerGetRecipesByCategory: controlWrapper(
+    controllerGetRecipesByCategory
+  ),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
