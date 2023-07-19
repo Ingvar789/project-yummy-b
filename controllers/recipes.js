@@ -91,7 +91,9 @@ const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
   const { instructions } = req.body;
 
-  const instructionsParse = instructions.join("\n");
+  const arrayOfStrings = JSON.parse(instructions);
+
+  const resultString = arrayOfStrings.join(". ");
 
   let preview;
 
@@ -118,7 +120,7 @@ const controllerAddRecipe = async (req, res) => {
 
   const newRecipe = await Recipe.create({
     ...req.body,
-    instructions: instructionsParse,
+    instructions: resultString,
     preview,
     owner,
   });
