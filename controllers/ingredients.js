@@ -25,13 +25,13 @@ const controllerSearchByIngredients = async (req, res) => {
   const result = await Recipe.find({
     ingredients: {
       $elemMatch: {
-        _id: id,
+        id: id,
       },
     },
   }).skip(skip).limit(limit);
   const total = result.length;
   const totalPages = Math.ceil(total / limit);
-console.log(total)
+console.log(id)
   res.json({result, currentPage: page, totalPages });
 };
 
