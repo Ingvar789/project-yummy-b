@@ -5,7 +5,7 @@ const Joi = require("joi");
 const recipeSchemaJoi = Joi.object({
     title: Joi.string().required().messages({ "any.required": `missing required title field` }),
     category: Joi.string().required().messages({ "any.required": `missing required category field` }),
-    ingredients: Joi.object().required().messages({ "any.required": `missing required ingredients field` }),
+    ingredients: Joi.array().required().messages({ "any.required": `missing required ingredients field` }),
 });
 
 const joiSchemas = {

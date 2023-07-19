@@ -11,17 +11,11 @@ const isValidIdParam = require("../../middlewares/isValidIdParam");
 const router = express.Router();
 
 router.use(authentication);
-
+// get favorites
 router.get("/", controllerGetFavorites);
-router.patch(
-  "/:recipeId",
-  isValidIdParam("recipeId"),
-  controllerAddToFavorites
-);
-router.delete(
-  "/:recipeId",
-  isValidIdParam("recipeId"),
-  controllerDeleteFromFavorites
-);
+// add favorites
+router.patch("/:recipeId", isValidIdParam("recipeId"), controllerAddToFavorites);
+// delete favorites
+router.delete("/:recipeId", isValidIdParam("recipeId"), controllerDeleteFromFavorites);
 
 module.exports = router;
