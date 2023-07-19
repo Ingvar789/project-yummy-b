@@ -34,11 +34,9 @@ const recipeSchemaMongoose = new Schema(
     },
     thumb: {
       type: String,
-      require: true,
     },
     preview: {
       type: String,
-      require: true,
     },
     time: {
       type: String,
