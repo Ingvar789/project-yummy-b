@@ -52,15 +52,15 @@ const controllerGetRecipesByCategory = async (req, res) => {
   const { page = 1, limit = 8 } = req.query;
   const skip = (page - 1) * limit;
 
-    const totalRecipes = await Recipe.countDocuments({ category });
-    const recipes = await Recipe.find({ category }).skip(skip).limit(limit);
-    const totalPages = Math.ceil(totalRecipes / limit);
+  const totalRecipes = await Recipe.countDocuments({ category });
+  const recipes = await Recipe.find({ category }).skip(skip).limit(limit);
+  const totalPages = Math.ceil(totalRecipes / limit);
 
-    res.json({
-      recipes,
-      currentPage: page,
-      totalPages,
-    });
+  res.json({
+    recipes,
+    currentPage: page,
+    totalPages,
+  });
 };
 
 const controllerGetRecipeById = async (req, res) => {
@@ -89,7 +89,9 @@ const controllerGetPopularRecipes = async (req, res) => {
 
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
-  console.log(req.body);
+  const { instructions } = req.body;
+
+  const instructionsParse = instructions.join("\n");
 
   let preview;
 
@@ -114,7 +116,12 @@ const controllerAddRecipe = async (req, res) => {
       "https://res.cloudinary.com/dvmiapyqk/image/upload/v1688894039/1_jyhhh3.png";
   }
 
-  const newRecipe = await Recipe.create({ ...req.body, preview, owner });
+  const newRecipe = await Recipe.create({
+    ...req.body,
+    instructions: instructionsParse,
+    preview,
+    owner,
+  });
 
   res.status(201).json(newRecipe);
 };
@@ -174,7 +181,9 @@ const controllerSearchByTitle = async (req, res) => {
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
+  controllerGetRecipesByCategory: controlWrapper(
+    controllerGetRecipesByCategory
+  ),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
