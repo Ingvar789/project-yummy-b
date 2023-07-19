@@ -1,11 +1,5 @@
-
-const {FoodItem} = require("../models/recipe")
-// const HttpError = require("../helpers/HttpError");
-// const { Recipe} = require("../models/recipe");
-
 const HttpError = require("../helpers/HttpError");
 const { Recipe } = require("../models/recipe");
-
 const controlWrapper = require("../decorators/controllWrapper");
 
 const controllerCategoryList = async (req, res) => {
@@ -98,52 +92,32 @@ const controllerUpdateStatusRecipe = async (req, res) => {
   res.json(req.body);
 };
 
-const kindOfRecipe  = async (req, res) => {
-//const categories = await FoodItem.findOne({categories})
-    res.status(201).json({categories:categories});
-}
-
-
-const controllerSearchByTitle = async(req,res) => {
-  const {title}  = req.body;
-  const titleSearch = title.trim();
-  if (titleSearch === '') {
-      throw new HttpError(400, `Empty search fild`);
-    }
-    const result = {title: { $regex: title, $options: 'i' } }
-    const searchRecipe = await Recipe.find({title: { $regex: title, $options: 'i' } });
-
 const controllerSearchByTitle = async (req, res) => {
   const { title } = req.query;
-
 
   if (title === "") {
     throw new HttpError(400, `Empty search fild`);
   }
-const searchRecipe = await Recipe.find({
+  const searchRecipe = await Recipe.find({
     title: { $regex: title, $options: "i" },
   });
-
 
   if (searchRecipe.length === 0) {
     throw HttpError(404, "recipe not found");
   }
   return res.json(searchRecipe);
 };
-};
-
 
 module.exports = {
-
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
+  controllerGetRecipesByCategory: controlWrapper(
+    controllerGetRecipesByCategory
+  ),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
   controllerUpdateRecipe: controlWrapper(controllerUpdateRecipe),
   controllerUpdateStatusRecipe: controlWrapper(controllerUpdateStatusRecipe),
   controllerSearchByTitle: controlWrapper(controllerSearchByTitle),
-
 };
-

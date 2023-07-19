@@ -4,6 +4,9 @@ const { Schema, model } = mongoose;
 
 const ingredientSchema = new Schema(
   {
+      _id: {
+          type: Schema.Types.ObjectId,
+      },
     name: {
       type: String,
       required: [true, "Set name of ingredients"],
@@ -12,7 +15,7 @@ const ingredientSchema = new Schema(
       type: String,
       required: [true, "Set description of ingredients"],
     },
-    imgURL: {
+    img: {
       type: String,
       required: [true, "Set image of ingredient"],
     },

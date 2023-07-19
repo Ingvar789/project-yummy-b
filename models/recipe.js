@@ -3,6 +3,7 @@ const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
 
 const recipeSchemaJoi = Joi.object({
+<<<<<<< HEAD
   name: Joi.string()
     .required()
     .messages({ "any.required": `missing required name field` }),
@@ -33,8 +34,16 @@ const joiSchemas = {
   recipeSchemaJoi,
   updateFavoriteSchemaJoi,
   getCategoriesJoi,
-};
+=======
+    title: Joi.string().required().messages({ "any.required": `missing required title field` }),
+    category: Joi.string().required().messages({ "any.required": `missing required category field` }),
+    ingredients: Joi.array().required().messages({ "any.required": `missing required ingredients field` }),
+});
 
+const joiSchemas = {
+  recipeSchemaJoi,
+>>>>>>> 8686f4565eeef55a1fda8ac693e95e3658c00c07
+};
 const recipeSchemaMongoose = new Schema(
   {
     title: {
@@ -56,9 +65,11 @@ const recipeSchemaMongoose = new Schema(
       type: String,
       require: true,
     },
+    thumb: {
+      type: String,
+    },
     preview: {
       type: String,
-      require: true,
     },
     time: {
       type: String,
@@ -71,8 +82,28 @@ const recipeSchemaMongoose = new Schema(
       type: Array,
     },
     ingredients: {
-      type: Array,
+      _id: false,
+      type: [
+        {
+          id: {
+            type: String,
+            ref: "ingredient",
+          },
+          measure: {
+            type: [String],
+            default: [],
+          },
+        },
+      ],
       require: true,
+    },
+    favoritesCounter: {
+      type: Number,
+      default: 0,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
     },
   },
   { versionKey: false }
