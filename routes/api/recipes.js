@@ -35,7 +35,7 @@ router.get("/own-recipes/:id", isValidIdParam("id"), controllerGetRecipeByUserId
 // popular recipes
 router.get("/recipe/popular-recipe", controllerGetPopularRecipes);
 // add recipe
-router.post("/own-recipes", validateAddRecipe, upload.single("preview"), controllerAddRecipe);
+router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
 // delete recipe by id
 router.delete("/own-recipes/:id", isValidIdParam("id"), controllerRemoveRecipe);
 
