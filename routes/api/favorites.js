@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+  controllerGetAllFavorites,
   controllerGetFavorites,
   controllerAddToFavorites,
   controllerDeleteFromFavorites,
@@ -11,6 +12,8 @@ const isValidIdParam = require("../../middlewares/isValidIdParam");
 const router = express.Router();
 
 router.use(authentication);
+// get all favorites
+router.get("/all", controllerGetAllFavorites)
 // get favorites
 router.get("/", controllerGetFavorites);
 // add favorites

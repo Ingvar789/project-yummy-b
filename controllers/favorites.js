@@ -3,6 +3,13 @@ const { User } = require("../models/user");
 const controlWrapper = require("../decorators/controllWrapper");
 const { HttpError } = require("../helpers");
 
+const controllerGetAllFavorites = async (req, res) => {
+  const { id } = req.user;
+  const user = await User.findById(id);
+  const favorites = user.favorites;
+
+  res.json( favorites );
+}
 const controllerGetFavorites = async (req, res) => {
   const { id } = req.user;
 
@@ -17,8 +24,8 @@ const controllerGetFavorites = async (req, res) => {
   const favoriteRecipes = await Recipe.find({
     _id: { $in: favoriteRecipeIds },
   })
-    .skip(skip)
-    .limit(limit);
+      .skip(skip)
+      .limit(limit);
 
   const totalPages = Math.ceil(totalRecipes / limit);
 
@@ -51,7 +58,7 @@ const controllerAddToFavorites = async (req, res) => {
     throw HttpError(404, "User not found");
   }
 
-  const recipe = await Recipe.findById(recipeId).populate();
+  const recipe = await Recipe.findById(recipeId);
 
   if (!recipe) {
     throw HttpError(404, "Recipe not found");
@@ -116,6 +123,7 @@ const controllerDeleteFromFavorites = async (req, res) => {
 };
 
 module.exports = {
+  controllerGetAllFavorites: controlWrapper(controllerGetAllFavorites),
   controllerGetFavorites: controlWrapper(controllerGetFavorites),
   controllerAddToFavorites: controlWrapper(controllerAddToFavorites),
   controllerDeleteFromFavorites: controlWrapper(controllerDeleteFromFavorites),

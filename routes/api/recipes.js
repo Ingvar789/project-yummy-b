@@ -26,7 +26,7 @@ router.get("/category-list", controllerCategoryList);
 router.get("/main-page", controllerMainPage);
 // search recipes by keyword
 router.get("/search", controllerSearchByTitle);
-// recipes by category, 8 recipe per page
+// recipes by category
 router.get("/category/:categoryName", controllerGetRecipesByCategory);
 // get one recipe by id
 router.get("/:id", isValidIdParam("id"), controllerGetRecipeById);
