@@ -80,6 +80,8 @@ const controllerGetPopularRecipes = async (req, res) => {
     return {
       _id: recipe._id,
       title: recipe.title,
+      preview: recipe.preview,
+      description: recipe.description,
       favoritesCounter: recipe.favoritesCounter,
     };
   });
