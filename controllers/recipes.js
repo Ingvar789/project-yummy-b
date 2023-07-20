@@ -112,12 +112,10 @@ const controllerAddRecipe = async (req, res) => {
     preview =
       "https://res.cloudinary.com/dvmiapyqk/image/upload/v1688894039/1_jyhhh3.png";
   }
-  const { instructions } = req.body;
-  const arrayOfStrings = JSON.parse(instructions);
-  const resultString = arrayOfStrings.join(" ");
 
-  const parsedIngredients = JSON.parse(req.body.ingredients);
-  const newRecipe = { ...req.body, preview, owner, instructions: resultString, ingredients: parsedIngredients };
+  const instructions = req.body.instructions.join(". ");
+  const ingredients =req.body.ingredients.map((i)=> JSON.parse(i));
+  const newRecipe = { ...req.body, preview, owner, instructions, ingredients };
   const addedRecipe = await Recipe.create(newRecipe);
 
   res.status(201).json(addedRecipe);
