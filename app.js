@@ -16,7 +16,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/users/verify/:verificationToken', express.static('entree'));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 app.use("/api/users", authRouter);
 app.use("/api/recipes", recipeRouter);
 app.use("/api/ingredients", ingredientsRouter);

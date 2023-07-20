@@ -6,14 +6,8 @@ const emailRegex = /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/m;
 
 const userSchemaRegisterJoi = Joi.object({
   name: Joi.string(),
-  email: Joi.string()
-    .pattern(emailRegex)
-    .required()
-    .messages({ "any.required": `missing required email field` }),
-  password: Joi.string()
-    .min(6)
-    .required()
-    .messages({ "any.required": `missing required password field` }),
+  email: Joi.string().pattern(emailRegex).required().messages({ "any.required": `missing required email field` }),
+  password: Joi.string().min(6).required().messages({ "any.required": `missing required password field` }),
   subscription: Joi.boolean(),
 });
 

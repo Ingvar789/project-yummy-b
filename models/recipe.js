@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
+const {string} = require("joi");
 
 const recipeSchemaJoi = Joi.object({
   title: Joi.string()
@@ -57,16 +58,15 @@ const recipeSchemaMongoose = new Schema(
     ingredients: {
       _id: false,
       type: [
-        {
-          id: {
-            type: String,
-            ref: "ingredient",
-          },
-          measure: {
-            type: [String],
-            default: [],
-          },
-        },
+          {
+              id: {
+                  type: String,
+                  ref: "ingredient"
+              },
+              measure: {
+                  type: String
+              }
+          }
       ],
       require: true,
     },
