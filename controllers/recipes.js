@@ -89,11 +89,13 @@ const controllerGetPopularRecipes = async (req, res) => {
 
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
+
   const { instructions } = req.body;
 
   const arrayOfStrings = JSON.parse(instructions);
 
   const resultString = arrayOfStrings.join(". ");
+
 
   let preview;
 
@@ -117,15 +119,10 @@ const controllerAddRecipe = async (req, res) => {
     preview =
       "https://res.cloudinary.com/dvmiapyqk/image/upload/v1688894039/1_jyhhh3.png";
   }
+  const newRecipe = { ...req.body, preview, owner, instructions: resultString, ingredients: JSON.parse(req.body.ingredients) };
+  const addedRecipe = await Recipe.create(newRecipe);
 
-  const newRecipe = await Recipe.create({
-    ...req.body,
-    instructions: resultString,
-    preview,
-    owner,
-  });
-
-  res.status(201).json(newRecipe);
+  res.status(201).json(addedRecipe);
 };
 
 const controllerRemoveRecipe = async (req, res) => {
@@ -183,9 +180,7 @@ const controllerSearchByTitle = async (req, res) => {
 module.exports = {
   controllerCategoryList: controlWrapper(controllerCategoryList),
   controllerMainPage: controlWrapper(controllerMainPage),
-  controllerGetRecipesByCategory: controlWrapper(
-    controllerGetRecipesByCategory
-  ),
+  controllerGetRecipesByCategory: controlWrapper(controllerGetRecipesByCategory),
   controllerGetRecipeById: controlWrapper(controllerGetRecipeById),
   controllerAddRecipe: controlWrapper(controllerAddRecipe),
   controllerRemoveRecipe: controlWrapper(controllerRemoveRecipe),
