@@ -92,9 +92,9 @@ const controllerAddRecipe = async (req, res) => {
 
   const { instructions } = req.body;
 
-  const arrayOfStrings = JSON.parse(instructions);
+  // const arrayOfStrings = JSON.parse(instructions);
 
-  const resultString = arrayOfStrings.join(". ");
+  const resultString = instructions.join(" ");
 
 
   let preview;
