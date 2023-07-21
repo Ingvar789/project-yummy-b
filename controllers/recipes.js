@@ -116,8 +116,8 @@ const controllerAddRecipe = async (req, res) => {
   }
 
   const instructions = req.body.instructions.join(" ");
-  // const ingredients = req.body.ingredients.map((i)=> JSON.parse(i));
-  const newRecipe = { ...req.body, preview, owner, instructions };
+  const ingredients = req.body.ingredients.map((i)=> JSON.parse(i));
+  const newRecipe = { ...req.body, preview, owner, instructions, ingredients };
   const addedRecipe = await Recipe.create(newRecipe);
 
   res.status(201).json(addedRecipe);
