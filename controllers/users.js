@@ -258,8 +258,69 @@ const controllerUpdateSubscription = async (req, res) => {
   const subscribedEmail = {
     to: email,
     subject: "Subscribed successfully",
-    html: `<div style="background-color: #99FF99; text-align: center; padding: 20px;"><h1>Welcome to <span style="font-size:40px; font-style: italic;" >"So Yummy"</span> app!</h1> 
-    <h5>You have successfully subscribed to the newsletter from our app. Thank you!</h5></div>`,
+    html: `<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>So Yummy subscription</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0;">
+ <table  border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td>
+    <table style="border-collapse: collapse;"  border="0" cellspacing="0" cellpadding="0" align="center" style="max-width: 600px">
+   <tbody>
+     <tr>
+    <td align="center" bgcolor="#8BAA36" style="padding: 0px; font-family: Poppins;">
+      <h2 style="font-weight: 600; font-size: 32px; line-height: 1; color: #fafafa">So Yummy</h2>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#FAFAFA" style="padding: 20px 30px 20px 30px; font-family: Poppins; font-weight: 600; background-image: url('https://res.cloudinary.com/dcmnkrdst/image/upload/v1689614787/email-images/qa40f3rh2wylnompmzeq.png'); background-attachment: local; background-position: 0 0;  background-size: 600px; background-repeat: no-repeat;">
+      <table  border="0" cellpadding="0" cellspacing="0" width="100%">
+     <tr>
+    <td align="center" bgcolor="transparent" style="padding: 10px 0px 10px 0px;">
+      <img width="100" style="display: block;" alt="" src="https://res.cloudinary.com/dcmnkrdst/image/upload/v1689614787/email-images/kn397glmhnrthqthkk0i.svg">
+    </td>
+     </tr>
+     <tr>
+       <td align="center" bgcolor="transparent" style="padding: 10px 0px 10px 0px; line-height: 1.6">
+      <p>Welcome to the "So Yummy" app!</p>
+      <p>Thank you for your interest in our app and your willingness to subscribe to our newsletter! </p>
+      <p>We truly appreciate your support and are excited to keep you updated with the latest news, recipes, and helpful tips for cooking delicious dishes.</p>
+    </td>
+     </tr>
+          <tr>
+       <td align="center" bgcolor="transparent" style="padding: 10px 0px 10px 0px;">
+      <p>Thank you for choosing our app. Together, we create the most delightful culinary moments!</p>
+    </td>
+     </tr>
+     <tr>
+          <td align="right" bgcolor="transparent" style="padding: 10px 0px 10px 0px;">
+            <p>Best regards, So Yummy team</p>
+          </td>
+        </tr>
+   </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" bgcolor="#22252A" color="#fafafa" style="padding: 10px 30px 10px 30px; font-family: Poppins;">
+      <table  border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+       <td><p style="color: #fafafa">So Yummy Company</td>
+    <td align="right"><p style="color: #fafafa">The best recipes</p></td>
+     </tr>
+   </table>
+    </td>
+  </tr>
+   </tbody>
+ </table>
+   </td>
+  </tr>
+ </table>
+</body>
+</html>`,
   };
 
   await sendEmail(subscribedEmail);
@@ -343,5 +404,7 @@ module.exports = {
   controllerVerifyEmail: controlWrapper(controllerVerifyEmail),
   controllerResendVerifyEmail: controlWrapper(controllerResendVerifyEmail),
   controllerGetShoppingList: controlWrapper(controllerGetShoppingList),
-  controllerUpdateIngredientToShoppingList: controlWrapper(controllerUpdateIngredientToShoppingList),
+  controllerUpdateIngredientToShoppingList: controlWrapper(
+    controllerUpdateIngredientToShoppingList
+  ),
 };
