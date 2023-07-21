@@ -1,8 +1,8 @@
 const validateRequest = () => {
     const func = (req, res, next) => {
-        let { instructions, ingredients } = req.body;
+        let { instructions } = req.body;
         instructions = JSON.parse(instructions);
-        ingredients = JSON.parse(ingredients);
+        const ingredients = JSON.parse(req.body.ingredients).map((i)=> JSON.parse(i));
         req.body = { ...req.body, instructions, ingredients };
         next();
     };

@@ -75,7 +75,7 @@ const controllerGetRecipeById = async (req, res) => {
 
 const controllerGetPopularRecipes = async (req, res) => {
   const popularRecipes = await Recipe.find().sort("-favoritesCounter");
-  console.log(popularRecipes);
+
   const popularRecipeInfo = popularRecipes.map((recipe) => {
     return {
       _id: recipe._id,
