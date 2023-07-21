@@ -1,11 +1,18 @@
 const { Schema, model } = require("mongoose");
 const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
-const {string} = require("joi");
 
 const recipeSchemaJoi = Joi.object({
     title: Joi.string().required().messages({ "any.required": `missing required title field` }),
     category: Joi.string().required().messages({ "any.required": `missing required category field` }),
+    area: Joi.string(),
+    instructions: Joi.array(),
+    description: Joi.string(),
+    thumb: Joi.string(),
+    preview: Joi.string(),
+    time: Joi.string().required().messages({ "any.required": `missing required time field` }),
+    youtube: Joi.string(),
+    tags: Joi.array(),
     ingredients: Joi.array().required().messages({ "any.required": `missing required ingredients field` }),
 });
 

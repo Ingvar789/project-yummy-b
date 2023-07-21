@@ -3,7 +3,7 @@ const authentication = require("../../middlewares/authentication");
 const isValidIdParam = require("../../middlewares/isValidIdParam");
 const upload = require("../../middlewares/upload");
 const { validateAddRecipe } = require("../../middlewares/recipeValidation");
-
+const {validateRequest} = require("../../middlewares/validateRequest");
 const {
   controllerCategoryList,
   controllerMainPage,
@@ -35,7 +35,7 @@ router.get("/own-recipes/:id", isValidIdParam("id"), controllerGetRecipeByUserId
 // popular recipes
 router.get("/recipe/popular-recipe", controllerGetPopularRecipes);
 // add recipe
-router.post("/own-recipes", upload.single("preview"), controllerAddRecipe);
+router.post("/own-recipes", upload.single("preview"), validateRequest(), validateAddRecipe, controllerAddRecipe);
 // delete recipe by id
 router.delete("/own-recipes/:id", isValidIdParam("id"), controllerRemoveRecipe);
 

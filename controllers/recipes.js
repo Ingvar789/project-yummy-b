@@ -91,7 +91,7 @@ const controllerGetPopularRecipes = async (req, res) => {
 
 const controllerAddRecipe = async (req, res) => {
   const { _id: owner } = req.user;
-  console.log(req.body);
+
   let preview;
 
   if (req.file) {
@@ -116,8 +116,8 @@ const controllerAddRecipe = async (req, res) => {
   }
 
   const instructions = req.body.instructions.join(" ");
-  const ingredients =req.body.ingredients.map((i)=> JSON.parse(i));
-  const newRecipe = { ...req.body, preview, owner, instructions, ingredients };
+  // const ingredients = req.body.ingredients.map((i)=> JSON.parse(i));
+  const newRecipe = { ...req.body, preview, owner, instructions };
   const addedRecipe = await Recipe.create(newRecipe);
 
   res.status(201).json(addedRecipe);
