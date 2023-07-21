@@ -93,8 +93,7 @@ const userSchemaMongoose = new Schema(
             ref: "recipe",
           },
           measure: {
-            type: [String],
-            default: [],
+            type:String,
           },
         },
       ],
